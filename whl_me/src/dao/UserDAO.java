@@ -18,7 +18,7 @@ public class UserDAO {
 	}
 
 	public boolean checkData(int choice,String data) {
-		String[] cols = { "user_id","","user_nickname" };
+		String[] cols = { "user_id","","","user_nickname" };
 		String sql = "select * from user where " + cols[choice] + "=?";
 		try {
 			ps = conn.prepareStatement(sql);

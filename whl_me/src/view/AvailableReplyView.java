@@ -32,6 +32,7 @@ public class AvailableReplyView {
 				int choice = sc.nextInt();
 				if (choice == 1) {
 					new InsertReplyView();
+					break;
 				} else if (choice == 2) {
 					System.out.println("💤리뷰 작성하기를 종료합니다.");
 					break;

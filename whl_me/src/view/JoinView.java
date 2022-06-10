@@ -63,7 +63,7 @@ public class JoinView {
 					break;
 				case 3:
 					//닉네임
-					if (udao.checkData(i, datas[i])) {
+					if (udao.checkData(i, inputData)) {
 						System.out.println("◎사용 가능한 닉네임입니다.");
 						datas[i] = inputData;
 						i++;

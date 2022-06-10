@@ -19,9 +19,7 @@ public class A_UpdateUserView {
 			if (choice == 6) {
 				System.out.println("💤유저 정보 변경을 종료합니다.");
 				break;
-			}
-
-			else {
+			} else {
 				System.out.print("■새로운 값 입력 : ");
 				String inputData = sc.next();
 				switch (choice) {
@@ -32,7 +30,7 @@ public class A_UpdateUserView {
 				case 2:
 					// 닉네임
 					// 중복여부
-					if (!udao.checkData(choice, inputData)) {
+					if (!udao.checkData(3, inputData)) {
 						System.out.println("※중복되는 닉네임이 있습니다. 확인 후 다시 확인해주세요.");
 						continue;
 					}
@@ -69,7 +67,7 @@ public class A_UpdateUserView {
 				System.out.println("■정말 수정 하시겠습니까?(Y/N)");
 				String checkUpdate = sc.next();
 				if (checkUpdate.equalsIgnoreCase("Y")) {
-					if (udao.update(choice,inputData)) {
+					if (udao.update(choice, inputData)) {
 						System.out.println("◎유저 정보 수정에 성공했습니다.");
 						UserDTO updatedUser = new UserDTO();
 						String user_id = ((UserDTO) Session.getData("selectedUser")).user_id;

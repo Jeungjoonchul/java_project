@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class RegEx {
 	public static String regPhone(String phone) {
 		String phone_reg = "";
-		if (phone.equalsIgnoreCase("")||phone.equalsIgnoreCase("*")) {
+		if (phone.equalsIgnoreCase("")||phone.equalsIgnoreCase("*")||phone==null) {
 			phone_reg = "번호 없음";
 		} else if (phone.length() == 8) {
 			phone_reg = phone.replaceFirst("^([0-9]{4})([0-9]{4})$", "$1-$2");

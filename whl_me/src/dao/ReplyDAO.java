@@ -21,6 +21,9 @@ public class ReplyDAO {
 	public ArrayList<ReplyDTO> getList() {
 		ArrayList<ReplyDTO> result = new ArrayList<ReplyDTO>();
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
+		if(user_id.equals("admin")) {
+			user_id = ((UserDTO) Session.getData("selectedUser")).user_id;
+		}
 		String sql = "select rp.reply_num,rp.reply_date,rp.reply_comment,rp.reply_score,rp.user_id,rp.restaurant_id,rp.book_num,rs.restaurant_name,b.book_schedule from reply rp join restaurant rs on rp.restaurant_id=rs.restaurant_id join book b on b.book_num=rp.book_num where rp.user_id = ?";
 		try {
 			ps = conn.prepareStatement(sql);
@@ -46,6 +49,9 @@ public class ReplyDAO {
 	public boolean delete(int reply_num) {
 		String sql = "delete from reply where reply_num = ? and user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
+		if(user_id.equals("admin")) {
+			user_id = ((UserDTO) Session.getData("selectedUser")).user_id;
+		}
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reply_num);
@@ -54,10 +60,13 @@ public class ReplyDAO {
 		} catch (SQLException e) {}
 		return false;
 	}
-
+	
 	public boolean isReplyOn(int reply_num) {
 		String sql = "select * from reply where reply_num = ? and user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
+		if(user_id.equals("admin")) {
+			user_id = ((UserDTO) Session.getData("selectedUser")).user_id;
+		}
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reply_num);

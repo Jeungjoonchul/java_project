@@ -15,7 +15,18 @@ public class RestaurantDTO {
     public int avg_score;// 추가
     public int reply_cnt;// 추가
 	
-    @Override
+    
+    public RestaurantDTO() {
+
+	}
+
+
+	public RestaurantDTO(String[] datas) {
+
+	}
+
+
+	@Override
 	public String toString() {
 		String restInfo = "";
 		
@@ -23,7 +34,7 @@ public class RestaurantDTO {
 		restaurant_phone = RegEx.regPhone(restaurant_phone);
 		restInfo+=String.format("%s / %s\n", restaurant_address,restaurant_phone);
 		restInfo+=String.format("예약 가능 인원 : %d\n",restaurant_capacity);
-		if(restaurant_close.equals("")) {
+		if(restaurant_close.equals("")||restaurant_close==null) {
 			restaurant_close = "휴무 없음";
 		}
 		restInfo+=String.format("휴무일 : %s\n",restaurant_close);

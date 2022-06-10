@@ -45,7 +45,7 @@ public class A_ManageUserView {
 					
 					
 					System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-					System.out.print("번호 선택 : ");
+					System.out.print("■번호 선택 : ");
 					choice = sc.nextInt();
 					UserDTO selectedUser = ul.get(choice-1);
 					Session.setData("selectedUser", selectedUser);
