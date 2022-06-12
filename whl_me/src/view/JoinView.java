@@ -31,7 +31,7 @@ public class JoinView {
 				//사용자 입력 처리
 				switch (i) {
 				case 0:
-					//아이디
+					// 생각해 볼 것 : 숫자와 알파벳만 입력할 수 있도록, 숫자와 알파벳 외에 문자(한글, 특수문자 등) 사용 시 재입력
 					if (udao.checkData(i, inputData)) {
 						System.out.println("◎사용 가능한 아이디입니다.");
 						datas[i] = inputData;
@@ -42,10 +42,11 @@ public class JoinView {
 					break;
 				case 1:
 					//비밀번호
+					//생각해 볼 것 : 입력하는 문자 종류 
 					if (inputData.length() < 8) {
 						System.out.println("※비밀 번호는 8자리 이상 설정해주세요!");
 					} else {
-						System.out.print("비밀번호 확인 : ");
+						System.out.print("■비밀번호 확인 : ");
 						String checkPW = sc.next();
 						if (checkPW.equals(inputData)) {
 							System.out.println("◎비밀번호 확인 성공");
@@ -58,6 +59,7 @@ public class JoinView {
 					break;
 				case 2:
 					//이름
+					//생각해 볼 것 : 한글만 입력
 					datas[i] = inputData;
 					i++;
 					break;

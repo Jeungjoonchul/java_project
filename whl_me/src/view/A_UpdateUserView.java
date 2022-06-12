@@ -41,6 +41,9 @@ public class A_UpdateUserView {
 					if (!RegEx.validatePhone(inputData)) {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요.");
 						continue;
+					}else {
+						//수정
+						inputData=RegEx.phoneOnlyNumber(inputData);
 					}
 					break;
 				case 4:

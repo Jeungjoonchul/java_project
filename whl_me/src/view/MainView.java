@@ -44,8 +44,6 @@ public class MainView {
 			default:
 				System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 			}
-
 		}
 	}
-
 }

@@ -60,6 +60,13 @@ public class UpdateUserView {
 							checkCate = false;
 							break;
 						}
+						//추가(1111 입력 하는 경우 등)
+						for (int j = i+1; j < choiceCate.length(); j++) {
+							if(choiceCate.codePointAt(i)==choiceCate.codePointAt(j)) {
+								checkCate=false;
+								break;
+							}
+						}
 					}
 					if (checkCate) {
 						for (int i = 0; i < choiceCate.length(); i++) {

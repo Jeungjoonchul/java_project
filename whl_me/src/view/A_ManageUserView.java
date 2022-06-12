@@ -38,6 +38,7 @@ public class A_ManageUserView {
 				} else {
 
 					System.out.println("┏유저 검색 결과\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+					
 					for (UserDTO result : ul) {
 						String user = String.format("%d. %s", ul.indexOf(result) + 1, result.user_id);
 						System.out.println(user);

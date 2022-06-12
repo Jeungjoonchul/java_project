@@ -9,13 +9,13 @@ import dto.UserDTO;
 public class UserInfoView {
 	public UserInfoView() {
 		while (true) {
-			UserDTO user = new UserDTO();
+
 			UserDAO udao = new UserDAO();
 			Scanner sc = new Scanner(System.in);
 			System.out.println("=============");
 			System.out.println("🍜내 정보 보기🍣");
 			System.out.println("=============");
-			user = ((UserDTO) Session.getData("loginUser"));
+			UserDTO user = (UserDTO) Session.getData("loginUser");
 			System.out.println(user);
 			System.out.println("=============================");
 			System.out.println("■메뉴를 선택하세요.");

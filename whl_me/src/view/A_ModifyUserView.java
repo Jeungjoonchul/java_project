@@ -28,8 +28,10 @@ public class A_ModifyUserView {
 				if (checkDelete.equalsIgnoreCase("Y")) {
 					if (udao.deleteUserAll()) {
 						System.out.println("※유저 아이디 삭제에 성공했습니다.");
+						break;
 					} else {
 						System.out.println("※유저 아이디 삭제에 실패했습니다.");
+						break;
 					}
 				} else if (checkDelete.equalsIgnoreCase("N")) {
 					System.out.println("💤유저 삭제하기를 종료합니다.");
