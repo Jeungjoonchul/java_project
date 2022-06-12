@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegEx {
 	public static String regPhone(String phone) {
+		phone = RegEx.phoneOnlyNumber(phone);
 		String phone_reg = "";
 		if (phone.equalsIgnoreCase("")||phone.equalsIgnoreCase("*")||phone==null) {
 			phone_reg = "번호 없음";

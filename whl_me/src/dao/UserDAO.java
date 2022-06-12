@@ -12,7 +12,7 @@ public class UserDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-
+	
 	public UserDAO() {
 		conn = DBConnection.getConnection();
 	}
@@ -60,8 +60,7 @@ public class UserDAO {
 			ps.setString(8, newUser.user_address);
 			ps.setString(9, newUser.category_name);
 			return ps.executeUpdate() == 1;
-		} catch (SQLException e) {
-		}
+		} catch (SQLException e) {}
 		return false;
 	}
 
@@ -143,23 +142,29 @@ public class UserDAO {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, newData);
 			ps.setString(2, user_id);
-			ps.executeUpdate();
+			ps.executeUpdate(); //변경완료
+			//유저 정보 가져와서 세션화
 			sql = "select * from user where user_id = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, user_id);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				UserDTO login_user = new UserDTO();
-				login_user.user_id = rs.getString("user_id");
-				login_user.user_pw = rs.getString("user_pw");
-				login_user.user_name = rs.getString("user_name");
-				login_user.user_nickname = rs.getString("user_nickname");
-				login_user.user_phone = rs.getString("user_phone");
-				login_user.user_gender = rs.getString("user_gender");
-				login_user.user_email = rs.getString("user_email");
-				login_user.user_address = rs.getString("user_address");
-				login_user.category_name = rs.getString("category_name");
-				Session.setData("loginUser", loginUser);
+				UserDTO updated_user = new UserDTO();
+				updated_user.user_id = rs.getString("user_id");
+				updated_user.user_pw = rs.getString("user_pw");
+				updated_user.user_name = rs.getString("user_name");
+				updated_user.user_nickname = rs.getString("user_nickname");
+				updated_user.user_phone = rs.getString("user_phone");
+				updated_user.user_gender = rs.getString("user_gender");
+				updated_user.user_email = rs.getString("user_email");
+				updated_user.user_address = rs.getString("user_address");
+				updated_user.category_name = rs.getString("category_name");
+				//수정
+				if(loginUser.equals("admin")) {
+					Session.setData("selectedUser", updated_user);
+				}else {
+					Session.setData("loginUser", updated_user);
+				}
 				return true;
 			} else {
 				return false;
@@ -204,6 +209,7 @@ public class UserDAO {
 		String[] cols = { "", "user_id", "user_name", "user_nickname", "user_phone", "user_email" };
 		String sql = "";
 		
+		//이메일 검색 조건
 		if (choice == 5) {
 			sql = "select * from user where " + cols[choice] + " ='"+data+"'";
 			

@@ -7,125 +7,114 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import dao.RegEx;
+import dao.RestaurantDAO;
+import dao.UserRegisterDAO;
+import dto.RestaurantDTO;
+import dto.UserRegisterDTO;
+import view.SgtRestView;
 
 public class Test {
 	public static void main(String[] args) {
-		System.out.println("===============");
-		System.out.println("🍜음식점 추가하기🍣");
-		System.out.println("===============");
-		String[] category = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
-		int to = 0;
-		String[] inputInfo = { "음식점 이름(", "음식점 카테고리(", "음식점 주소(도로명주소 /", "음식점 전화번호(", "예약 가능 인원(",
-				"휴무일(월,화,수,목,금,토,일)중 하루만 입력해주세요 (휴무일이 없는경우 엔터 입력) /", "음식점 설명(", "" };
+		int register_num = 3;
+		UserRegisterDAO urdao = new UserRegisterDAO();
+		RestaurantDAO rdao = new RestaurantDAO();
+		UserRegisterDTO urdto = new UserRegisterDTO();
+		urdto = urdao.a_select(register_num);
+
 		String[] datas = new String[7];
-		Scanner sc = new Scanner(System.in);
-		HashMap<String, String> close = new HashMap<String, String>();
-		for (int i = 0; i < inputInfo.length;) {
-			if (i == 7) {
-
-				System.out.println("===============입력하신 정보===============");
-				for (int p = 0; p < datas.length; p++) {
-					System.out.print("■" + inputInfo[p] + "" + datas[p] + ")\n");
-				}
-				System.out.println("음식점 등록이 완료되었습니다.");// 성공 시 출력 및 매소드 연결 부분 추가
+		datas[0] = urdto.restaurant_name;
+		datas[1] = urdto.category_name;
+		datas[2] = urdto.restaurant_address;
+		datas[3] = urdto.restaurant_phone;
+		while (true) {
+			// 음식점 이름 : 파스타
+			// 음식점 카테고리 : 양식
+			// 음식점 주소 : 서울시 강남구
+			// 음식점 전화번호 : 전화번호
+			String rest_status = "";
+			rest_status += String.format("음식점 이름 : %s\n", datas[0]);
+			rest_status += String.format("카테고리 : %s\n", datas[1]);
+			rest_status += String.format("음식점 주소 : %s\n", datas[2]);
+			rest_status += String.format("음식점 전화번호 : %s\n", datas[3]);
+			System.out.println(rest_status);
+			// 1. 변경 없이 진행 / 2. 식당 이름 수정 / 3. 카테고리 수정 / 4. 주소 수정 / 5. 전화번호 수정 / 6. 전체 수정
+			// 번호를 입력하세요 : 2
+			// 새로운 값을 입력하세요 : 파스타1
+			String inputData = "";
+			String[] inputInfo = { "", "", "음식점 이름", "카테고리", "음식점 주소", "음식점 전화번호", "예약 가능 인원", "음식점 휴무", "음식점 설명" };
+			System.out.println(
+					"1. 전체 수정 / 2. 음식점 이름 수정 / 3. 카테고리 수정 / 4. 음식점 주소 수정 / 5. 음식점 전화번호 수정 / 6. 이대로 진행 / 7. 뒤로 가기");
+			Scanner sc = new Scanner(System.in);
+			int choice = sc.nextInt();
+			if (choice == 7) {
+				System.out.println("종료 합니다.");
 				break;
-
-			} else {
-				// 카테고리 설정은 번호 입력 시 해당 번호에 맞는 값을 datas배열에 저장
-				if (i == 1) {
-					System.out.println("■카테고리를 선택해주세요.");
-					System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
-					System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
-
-				} else {
-					// 입력 받아야할 내용 순서대로 출력
-					System.out.print("■" + inputInfo[i] + " 나가기는 '!') :");
+			} else if (choice == 1) {
+				for (int i = 2; i < inputInfo.length; i++) {
+					System.out.print(inputInfo[i] + "을(를) 입력하세요 : ");
+					sc = new Scanner(System.in);
+					inputData = sc.nextLine();
+					datas[i - 2] = inputData;
 				}
-				// 스캐너로 사용자에게 입력 받기
+				continue;
+			} else if (2 <= choice && choice <= 5) {
+				System.out.print("새로운 " + inputInfo[choice] + "을(를) 입력하세요 : ");
 				sc = new Scanner(System.in);
-				String inputData = sc.nextLine();
-				if (inputData.equalsIgnoreCase("!")) {// "!"입력시 빠져나가기 위해서 추가
-					break;
+				inputData = sc.nextLine();
+				System.out.println(datas[choice - 2] + " -> " + inputData);
+				if (choice == 5) {
+					datas[choice - 2] = RegEx.phoneOnlyNumber(inputData);
 				}
-				// 카테고리, 전화번호, 휴무일의 유효성 검사
-				switch (i) {
-				case 1:
-					// 1~6을 제외한 숫자 입력 시
-					if (!(RegEx.validateNumber(inputData)
-							&& (1 <= Integer.parseInt(inputData) && Integer.parseInt(inputData) <= 6))) {
-						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
-						continue;
-					}
-					break;
-				case 3:// 전화번호 오류 검사
-					if (!RegEx.validatePhone(inputData)) {
-						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
-						continue;
-					}
-					break;
-				case 5:
-					if (inputData.equals("")) {
-						close.isEmpty();
-						inputData="휴무없음";
-						i++;
-					} else {
-						String pattern = "^[월화수목금토일]*$";
-						if (Pattern.matches(pattern, inputData)) {
-							if (close.get(inputData) == null) {
-								close.put(inputData, inputData);
-								System.out.println("입력한 휴무일" + close.values());
-								System.out.print("또 입력하실?(Y/N) : ");
-								String yn = sc.nextLine();
-								if (yn.equalsIgnoreCase("Y")) {
-									continue;
-								} else if (yn.equalsIgnoreCase("N")) {
-									String[] keys = { "월", "화", "수", "목", "금", "토", "일" };
-									inputData = "";
-									for (int j = 0; j < keys.length; j++) {
-										if (close.get(keys[j]) != null) {
-											inputData += "," + close.get(keys[j]);
-										}
-									}
-									inputData = inputData.substring(1, inputData.length());
-									i++;
-								} else {
-									System.out.println("잘못 입력했음");
-									continue;
-								}
-							} else {
-								System.out.println("이미 입력한 값임");
-								continue;
-							}
-						} else {
-							System.out.println("입력 형식이 올바르지 않습니다.");
-							continue;
-						}
-					}
+				datas[choice - 2] = inputData;
+//				switch (choice) {
+//				case 2:
+//					System.out.println(urdto.restaurant_name + " -> " + inputData);
+//					urdto.restaurant_name = inputData;
+//					break;
+//				case 3:
+//					System.out.println(urdto.category_name + " -> " + inputData);
+//					urdto.category_name = inputData;
+//					break;
+//				case 4:
+//					System.out.println(urdto.restaurant_address + " -> " + inputData);
+//					urdto.restaurant_address = inputData;
+//					break;
+//				case 5:
+//					System.out.println(urdto.restaurant_phone + " -> " + inputData);
+//					urdto.restaurant_phone = inputData;
+//					break;
+//				}
+				continue;
+			} else if (choice == 6) {
+				for (int i = 6; i < inputInfo.length; i++) {
+					System.out.print(inputInfo[i] + "을(를) 입력하세요 : ");
+					sc = new Scanner(System.in);
+					inputData = sc.nextLine();
+					datas[i - 2] = inputData;
+				}
+				RestaurantDTO result = new RestaurantDTO(datas);
+				System.out.println(result);
+				System.out.println("정말 이대로 등록 하실래요?(Y/N)");
+				String checkInsert = sc.next();
+				if (checkInsert.equalsIgnoreCase("Y")) {
+					if (urdao.insert(result, 6, "Y", register_num)) {
 
-					break;
-				}
-				if (i == 1) {
-					to = Integer.parseInt(inputData);
-					System.out.print("■입력하시려는 내용이 \"" + category[to] + "\"가 맞나요? : (Y/N)");
+						System.out.println("등록 성공");
+						break;
 
-				} else {//월,수,금
-					System.out.print("■입력하시려는 내용이 \"" + inputData + "\"가 맞나요? : (Y/N)");
-				}
-				String checkInput = sc.next();
-				if (checkInput.equalsIgnoreCase("Y")) {
-					if (to != 0) {
-						datas[i] = category[to];
-						i++;
-						to = 0;
 					} else {
-						datas[i] = inputData;
-						i++;// "Y"입력시 다음 으로 넘가기 위해 추가
+						System.out.println("음식점 등록 실패 ");
+						break;
 					}
+				} else if (checkInsert.equalsIgnoreCase("N")) {
+					System.out.println("추천 음식점 등록을 취소합니다.");
+					break;
 				} else {
-					System.out.println("다시입력하세요,나가시려면'!'입력하세요");// 없으면 허전해서 추가함
+					System.out.println("잘못 입력");
 				}
+			} else {
+				System.out.println("잘못입력");
 			}
 		}
-
 	}
 }

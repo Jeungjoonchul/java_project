@@ -14,9 +14,6 @@ import dto.UserDTO;
 
 public class Test2 {
 	public static void main(String[] args) {
-		HashMap<String, String> test = new HashMap<String, String>();
-		System.out.println(test.isEmpty());
-		test.put("월", "월");
-		System.out.println(test.isEmpty());
+		
 	}
 }

@@ -99,4 +99,22 @@ public class RestaurantDAO {
 		}
 		return result;
 	}
+
+	public boolean insert(RestaurantDTO newRest) {
+		String sql = "insert into restaurant(restaurant_name,category_name,restaurant_address,restaurant_phone,restaurant_capacity,restaurant_close,restaurant_description) values(?,?,?,?,?,?,?)";
+		try {
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, newRest.restaurant_name);
+			ps.setString(2, newRest.category_name);
+			ps.setString(3, newRest.restaurant_address);
+			ps.setString(4, newRest.restaurant_phone);
+			ps.setInt(5, newRest.restaurant_capacity);
+			ps.setString(6, newRest.restaurant_close);
+			ps.setString(7, newRest.restaurant_description);
+			return ps.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println("실패 사유"+e);
+		}
+		return false;
+	}
 }

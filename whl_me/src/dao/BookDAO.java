@@ -24,6 +24,8 @@ public class BookDAO {
 		conn = DBConnection.getConnection();
 	}
 
+	
+	//수정 필요
 	public boolean checkDate(String date) {
 		Calendar now = Calendar.getInstance();
 		Calendar bookDate = Calendar.getInstance();
@@ -282,7 +284,8 @@ public class BookDAO {
 
 	public boolean delete(int book_num) {
 		String sql = "delete from book where book_num = ? and user_id = ?";
-		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
+//		String user_id = ((U serDTO)Session.getData("loginUser")).user_id;
+		String user_id = ((UserDTO)Session.getData("loginUser")).user_id;
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, book_num);

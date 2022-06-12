@@ -21,9 +21,18 @@ public class RestaurantDTO {
 	}
 
 
+
 	public RestaurantDTO(String[] datas) {
 
+		this.restaurant_name = datas[0];
+		this.category_name =datas[1];
+		this.restaurant_address = datas[2];
+		this.restaurant_phone = datas[3];
+		this.restaurant_capacity = Integer.parseInt(datas[4]);
+		this.restaurant_close = datas[5];
+		this.restaurant_description = datas[6];
 	}
+
 
 
 	@Override

@@ -51,3 +51,21 @@ public class UserRegisterDTO {
 		return infoUR;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
