@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-import dao.RegEx;
+import dao.Check;
 import dao.Session;
 import dao.UserDAO;
 import dto.UserDTO;
@@ -25,11 +25,11 @@ public class A_UpdateUserView {
 				switch (choice) {
 				case 1:
 					// 이름
-					// 검증 불가
+
 					break;
 				case 2:
 					// 닉네임
-					// 중복여부
+
 					if (!udao.checkData(3, inputData)) {
 						System.out.println("※중복되는 닉네임이 있습니다. 확인 후 다시 확인해주세요.");
 						continue;
@@ -37,18 +37,17 @@ public class A_UpdateUserView {
 					break;
 				case 3:
 					// 휴대폰번호
-					// 입력 형식 확인 / 02-1111-11111 (X)
-					if (!RegEx.validatePhone(inputData)) {
+
+					if (!Check.validatePhone(inputData)) {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요.");
 						continue;
 					}else {
 						//수정
-						inputData=RegEx.phoneOnlyNumber(inputData);
+						inputData=Check.phoneOnlyNumber(inputData);
 					}
 					break;
 				case 4:
 					// 성별
-					// M F
 					if (!(inputData.equalsIgnoreCase("M") || inputData.equalsIgnoreCase("f"))) {
 						System.out.println("※성별은 'M' 또는 'F'로만 입력해주세요.");
 						continue;
@@ -56,8 +55,7 @@ public class A_UpdateUserView {
 					break;
 				case 5:
 					// 이메일주소
-					// 입력 형식 sadjf#naver.com (X)
-					if (!RegEx.validateEmail(inputData)) {
+					if (!Check.validateEmail(inputData)) {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요.");
 						continue;
 					}
@@ -66,7 +64,12 @@ public class A_UpdateUserView {
 					System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 					continue;
 				}
-				System.out.println("◎입력한 값 : " + inputData);
+				if(choice==3) {
+					System.out.println("◎입력한 값 : " + Check.regPhone(inputData));
+				}else {
+					System.out.println("◎입력한 값 : " + inputData);
+				}
+				
 				System.out.println("■정말 수정 하시겠습니까?(Y/N)");
 				String checkUpdate = sc.next();
 				if (checkUpdate.equalsIgnoreCase("Y")) {

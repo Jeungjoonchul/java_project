@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-import dao.RegEx;
+import dao.Check;
 import dao.Session;
 import dao.UserRegisterDAO;
 import dto.UserDTO;
@@ -66,7 +66,7 @@ public class SgtRestView {
 					case 2:
 						String[] cate = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
 						int choiceCate = Integer.parseInt(inputData);
-						if (!(RegEx.validateNumber(inputData)&&(1<=Integer.parseInt(inputData)&&Integer.parseInt(inputData)<=6))) {
+						if (!(Check.validateNumber(inputData)&&(1<=Integer.parseInt(inputData)&&Integer.parseInt(inputData)<=6))) {
 							System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 						} else {
 							datas[i] = cate[choiceCate];
@@ -74,8 +74,8 @@ public class SgtRestView {
 						}
 						break;
 					case 3:
-						if (RegEx.validatePhone(inputData)) {
-							datas[i] = RegEx.phoneOnlyNumber(inputData);
+						if (Check.validatePhone(inputData)) {
+							datas[i] = Check.phoneOnlyNumber(inputData);
 							datas[5] = ((UserDTO) Session.getData("loginUser")).user_id;
 							i++;
 						} else {

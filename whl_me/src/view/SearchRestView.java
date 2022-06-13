@@ -64,7 +64,7 @@ public class SearchRestView {
 
 			// 메소드명 변경 searchList -> getRestList
 			// getRestList 실행 시 조회된 음식점 리스트가 "restList" Session에 저장됨
-			resultList = rdao.getRestList(choice, choiceCate, choiceSort, limit);
+			resultList = rdao.getList(choice, choiceCate, choiceSort, limit);
 			if (resultList.size() == 0) {
 				System.out.println("※조회된 식당이 없습니다.");
 			} else {

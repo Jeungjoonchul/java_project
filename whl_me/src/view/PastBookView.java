@@ -16,7 +16,7 @@ public class PastBookView {
 			BookDAO bdao = new BookDAO();
 			// 과거 예약 내역을 보기 위해 매개변수로 "past" 설정
 			String moment = "past";
-			bookList = bdao.getBookList(moment);
+			bookList = bdao.getList(moment);
 			if (bookList.size() == 0) {
 				System.out.println("※예약 내역을 찾을 수 없습니다.");
 				break;

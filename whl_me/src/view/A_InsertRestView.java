@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-import dao.RegEx;
+import dao.Check;
 import dao.RestaurantDAO;
 import dto.RestaurantDTO;
 
@@ -14,16 +14,9 @@ public class A_InsertRestView {
 		System.out.println("===============");
 		System.out.println("🍜음식점 추가하기🍣");
 		System.out.println("===============");
-		//음식점 추가를 위해 입력 받아야할 내용
-		//마지막은 등록 여부 확인 용으로 빈값으로 설정(for문에서 i==7일때 조건문 진입)
 		String[] inputInfo= {"음식점 이름(","음식점 카테고리","음식점 주소(도로명주소 /","음식점 전화번호(","예약 가능 인원(","휴무일","음식점 설명(",""};
-		//사용자에게 입력 받은값 유효성 검사 후 데이터를 담을 배열 선언
-		//데이터는 음식점 이름, 카테고리, 주소, 전화번호, 예약 가능 인원, 휴무일, 설명으로 7개
 		String[] datas=new String[7];
-		//입력을 위한 스캐너 생성
 		Scanner sc = new Scanner(System.in);
-		//받아야할 내용을 순서대로 사용자에게 제공 및 마지막에는 등록 여부 확인 후 음식점 등록
-		//7개의 값을 입력받고 마지막에 등록 여부 확인 위해 조건문 진입
 		for (int i = 0; i < inputInfo.length;) {
 			if(i==7) {
 				RestaurantDTO newRest = new RestaurantDTO(datas);
@@ -53,7 +46,7 @@ public class A_InsertRestView {
 					System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
 					System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
 				}else if(i==5) {
-					System.out.println("■휴무일을 선택해주세요.(ex : 토,일 -> '67'입력)");
+					System.out.println("■휴무일에 해당하는 숫자를 띄어쓰기 없이 선택해주세요.(ex : 토,일 -> '67'입력)");
 					System.out.println("1. 월 / 2. 화 / 3. 수 / 4. 목 / 5. 금 / 6. 토 / 7. 일 / 8. 휴무없음 ");
 				}
 				else {
@@ -71,7 +64,7 @@ public class A_InsertRestView {
 				switch(i) {
 				case 1:
 					//1~6을 제외한 숫자 입력 시 
-					if(!(RegEx.validateNumber(inputData)&&(1<=Integer.parseInt(inputData)&&Integer.parseInt(inputData)<=6))) {
+					if(!Check.validateNumber_choiceOne(inputData, 1, 6)) {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 						continue;
 					}else {
@@ -80,13 +73,32 @@ public class A_InsertRestView {
 					}
 					break;
 				case 3:
-					if(!RegEx.validatePhone(inputData)) {
+					if(!Check.validatePhone(inputData)) {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 						continue;
 					}
-					inputData = RegEx.regPhone(inputData);
+					inputData = Check.regPhone(inputData);
 					break;
 				case 5:
+					if(inputData.equals("8")) {
+						inputData="휴무 없음";
+					}else if(Check.valiadateNumber_choiceMulti(inputData, 1, 7)) {
+						String[] dow = {"","월","화","수","목","금","토","일"};
+						String result = inputData;
+						inputData="";
+						for (int j = 0; j < result.split("").length; j++) {
+							if(j==result.split("").length-1) {
+								inputData+=dow[Integer.parseInt(result.split("")[j])];
+								
+							}else {
+								inputData+=dow[Integer.parseInt(result.split("")[j])]+",";
+							}
+						}
+					}else {
+						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+						continue;
+					}
+					
 					boolean checkData = true;
 					for (int j = 0; j < inputData.length(); j++) {
 						if(!(49<=inputData.codePointAt(j)&&inputData.codePointAt(j)<=56)) {
@@ -128,7 +140,7 @@ public class A_InsertRestView {
 					String checkInput = sc.next();
 					if(checkInput.equalsIgnoreCase("Y")) {
 						if(i==3) {
-							inputData = RegEx.phoneOnlyNumber(inputData);
+							inputData = Check.phoneOnlyNumber(inputData);
 						}
 						else if(i==5) {
 							inputData = "";
@@ -146,5 +158,4 @@ public class A_InsertRestView {
 			}
 		}
 	}
-
 }

@@ -24,94 +24,13 @@ public class BookDAO {
 		conn = DBConnection.getConnection();
 	}
 
-	
-	//수정 필요
-	public boolean checkDate(String date) {
-		Calendar now = Calendar.getInstance();
-		Calendar bookDate = Calendar.getInstance();
-
-		bookDate.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1,
-				Integer.parseInt(date.split("-")[2]));
-
-		String[] dow = { "", "일", "월", "화", "수", "목", "금", "토" };
-		int rest_id = ((RestaurantDTO) Session.getData("selectedRest")).restaurant_id;
-		String sql = "select * from restaurant where restaurant_id =?";
-
-		try {
-			if (bookDate.compareTo(now) >= 0) {
-				ps = conn.prepareStatement(sql);
-				ps.setInt(1, rest_id);
-				rs = ps.executeQuery();
-				if (rs.next()) {
-					String[] rest_close = rs.getString("restaurant_close").split(",");
-					for (int i = 0; i < rest_close.length; i++) {
-						if (dow[bookDate.get(Calendar.DAY_OF_WEEK)].equals(rest_close[i])) {
-							return false;
-						}
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-		}
-		return false;
-	}
-
-//	public boolean checkDate(String date, String time) {
-//		Calendar hourLater = Calendar.getInstance();
-//		Calendar bookDate = Calendar.getInstance();
-//		hourLater.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 3600000);
-//		bookDate.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1,
-//				Integer.parseInt(date.split("-")[2]), Integer.parseInt(time.split(":")[0]),
-//				Integer.parseInt(time.split(":")[1]));
-//
-//		String[] dow = { "", "일", "월", "화", "수", "목", "금", "토" };
-//		int rest_id = ((RestaurantDTO) Session.getData("selectedRest")).restaurant_id;
-//		String sql = "select * from restaurant where restaurant_id =?";
-//
-//		try {
-//			if (bookDate.compareTo(hourLater) > 0) {
-//				ps = conn.prepareStatement(sql);
-//				ps.setInt(1, rest_id);
-//				rs = ps.executeQuery();
-//				if (rs.next()) {
-//					String[] rest_close = rs.getString("restaurant_close").split(",");
-//					for (int i = 0; i < rest_close.length; i++) {
-//						if (dow[bookDate.get(Calendar.DAY_OF_WEEK)].equals(rest_close[i])) {
-//							return false;
-//						}
-//					}
-//				}
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		} catch (SQLException e) {
-//		}
-//		return false;
-//	}
-	// 메소드명 변경 capacityCheck => checkCapacity
-	public boolean checkCapacity(int companion_number) {
-		String sql = "select * from restaurant where restaurant_id =?";
-		int rest_id = ((RestaurantDTO) Session.getData("selectedRest")).restaurant_id;
-		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, rest_id);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				int cap = rs.getInt("restaurant_capacity");
-				if (cap >= companion_number) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-
-		}
-		return false;
-	}
-
+	/**
+	 * book 테이블에 새로운 데이터(음식점 예약)를 추가하는 메소드<br>
+	 * @param newBook 예약정보를 포함하는 BookDTO 타입의 객체
+	 * @return
+	 * book 테이블에 새로운 데이터 추가 성공 시 true<br>
+	 * book 테이블에 새로운 데이터 추가 실패 시 false<br>
+	 */
 	public boolean insert(BookDTO newBook) {
 		String sql = "insert into book(book_schedule,book_companion_number,user_id,restaurant_id) values(?,?,?,?)";
 		newBook.restaurant_id = ((RestaurantDTO) Session.getData("selectedRest")).restaurant_id;
@@ -131,8 +50,14 @@ public class BookDAO {
 		return false;
 	}
 	
-	//메소드명 변경 searchList => getBookList
-	public ArrayList<BookDTO> getBookList(String moment) {
+	/**
+	 * user가 저장한 book(예약) 테이블에 데이터 리스트 검색<br>
+	 * @param moment 검색하고자 하는 예약 설정(과거 예약-> "past" / 현재(미래) 예약 ->"current")
+	 * @return
+	 * 과거 또는 현재(미래)의 book 데이터들을 BooKDTO 타입의 객체들로 포장 후 ArrayList에 담아 반환<br>
+	 */
+	//메소드명 변경 searchList => getBookList => getList
+	public ArrayList<BookDTO> getList(String moment) {
 		ArrayList<BookDTO> result = new ArrayList<BookDTO>();
 		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule,  b.user_id, b.restaurant_id, b.book_expired from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
@@ -142,15 +67,6 @@ public class BookDAO {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String bd = rs.getString("book_schedule");
-				// 2022-06-05 16:20:00
-//				String[] splited = {bd.split(" ")[0], bd.split(" ")[1]};
-//				int[] date = new int[6];
-//				date[0] = Integer.parseInt(splited[0].split("-")[0]);
-//				date[1] = Integer.parseInt(splited[0].split("-")[1]);
-//				date[2] = Integer.parseInt(splited[0].split("-")[2]);
-//				date[3] = Integer.parseInt(splited[1].split(":")[0]);
-//				date[4] = Integer.parseInt(splited[1].split(":")[1]);
-//				date[5] = Integer.parseInt(splited[1].split(":")[2]);
 				int[] date = new int[6];
 				int k = 0;
 				String[] splDateTime = new String[bd.split(" ").length];
@@ -173,6 +89,7 @@ public class BookDAO {
 				Calendar now = Calendar.getInstance();
 				Calendar schedule = Calendar.getInstance();
 				schedule.set(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
+				
 				if (moment.equalsIgnoreCase("current")) {
 					if (schedule.after(now)) {
 						BookDTO bl = new BookDTO();
@@ -186,7 +103,7 @@ public class BookDAO {
 						bl.book_expired = rs.getString("book_expired");
 						result.add(bl);
 					}
-					// 과거 예약 보기를 실행하기 위해 매개 변수("current" or "past") 추가 및 흐름 추가
+					
 				} else if (moment.equalsIgnoreCase("past")) {
 					if (schedule.before(now)) {
 						BookDTO bl = new BookDTO();
@@ -207,47 +124,14 @@ public class BookDAO {
 		}
 		return result;
 	}
-
-	//미사용 메소드
-//	public boolean checkBook(int book_num) {
-//		String sql = "select * from book where book_number = ? and user_id = ?";
-//		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
-//		try {
-//			ps = conn.prepareStatement(sql);
-//			ps.setInt(1, book_num);
-//			ps.setString(2, user_id);
-//			rs = ps.executeQuery();
-//			return rs.next();
-//		} catch (SQLException e) {
-//		}
-//		return false;
-//	}
 	
-	//select메소드와 내용 유사하여 통합
-//	public BookDTO selectForReply(int book_num) {
-//		String sql = "select * from book where book_num = ? and user_id = ?";
-//		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
-//		try {
-//			ps = conn.prepareStatement(sql);
-//			ps.setInt(1, book_num);
-//			ps.setString(2, user_id);
-//			rs = ps.executeQuery();
-//			if (rs.next()) {
-//				BookDTO result = new BookDTO();
-//				result.book_num = rs.getInt("book_num");
-//				result.book_companion_number = rs.getInt("book_companion_number");
-//				result.book_date = rs.getString("book_date");
-//				result.book_schedule = rs.getString("book_schedule");
-//				result.user_id = rs.getString("user_id");
-//				result.restaurant_id = rs.getInt("restaurant_id");
-//				result.book_expired = rs.getString("book_expired");
-//				return result;
-//			}
-//		} catch (SQLException e) {
-//		}
-//		return null;
-//	}
-	
+	/**
+	 * user가 저장한 book(예약) 중 하나를 선택<br>
+	 * 선택된 결과를 "selectedBook"의 key로 {@link dao.Session}에 저장<br>
+	 * @param book_num 예약 번호
+	 * @return
+	 * 음식점 이름을 포함한 book 데이터를 BookDTO로 포장하여 반환<br>
+	 */
 	//메소드명 변경 selectBookedRest => select
 	public BookDTO select(int book_num) {
 		BookDTO result = new BookDTO();
@@ -282,6 +166,13 @@ public class BookDAO {
 		return result;
 	}
 
+	/**
+	 * 선택한 book(예약) 데이터 삭제<br>
+	 * @param book_num 예약 번호
+	 * @return
+	 * book 테이블에 데이터 삭제 성공 시 true<br>
+	 * book 테이블에 데이터 삭제 실패 시 false<br>
+	 */
 	public boolean delete(int book_num) {
 		String sql = "delete from book where book_num = ? and user_id = ?";
 //		String user_id = ((U serDTO)Session.getData("loginUser")).user_id;
@@ -296,6 +187,18 @@ public class BookDAO {
 		return false;
 	}
 
+	/**
+	 * 선택한 book(예약) 데이터의 값 변경<br>
+	 * user 모드에서 예약 인원, 예약 날짜 변경 가능<br>
+	 * book_expired는 해당 예약에 대해 리뷰 작성 시 'N'에서 'Y'로 수정<br>
+	 * 
+	 * @param book_num 예약 번호
+	 * @param choice 바꾸고자 하는 데이터의 번호(1. 예약 인원 / 2. 예약 날짜 / 3. 리뷰 작성 여부)
+	 * @param newData 새로운 데이터의 값
+	 * @return
+	 * 데이터 변경 성공 시 true<br>
+	 * 데이터 변경 실패 시 false<br>
+	 */
 	public boolean update(int book_num, int choice, String newData) {
 		String[] cols = { "", "book_companion_number", "book_schedule", "book_expired" };
 		String sql = "Update book set " + cols[choice] + " = ? where book_num=? and user_id=?";
@@ -316,13 +219,20 @@ public class BookDAO {
 		return false;
 	}
 
-
+	/**
+	 * 현재 시점으로부터 과거의 예약 중 리뷰 작성 가능한 예약을 찾는 메소드<br>
+	 * book_expired가 'N'인 예약만 ArrayList에 담아 반환<br>
+	 * 같은 클래스에 있는 getList 메소드를 이용하여 과거의 예약 리스트를 뽑고 
+	 * ArrayList에 있는 BookDTO 객체의 book_expired가 'N'인 BookDTO 객체만 다시 ArrayList에 담아 반환<br>
+	 * @return
+	 * book_expired가 'N'인 데이터들을 ArrayList에 담아 반환<br>
+	 */
 	public ArrayList<BookDTO> notHasReplyBook() {
-		ArrayList<BookDTO> pastBookList = this.getBookList("past");
+		ArrayList<BookDTO> pastBookList = this.getList("past");
 		ArrayList<BookDTO> result = new ArrayList<BookDTO>();
-		for (BookDTO pastBL : pastBookList) {
-			if (pastBL.book_expired.equalsIgnoreCase("N")) {
-				result.add(pastBL);
+		for (BookDTO pastBook : pastBookList) {
+			if (pastBook.book_expired.equalsIgnoreCase("N")) {
+				result.add(pastBook);
 			}
 		}
 		return result;

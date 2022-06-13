@@ -3,7 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import dao.RegEx;
+import dao.Check;
 import dao.UserRegisterDAO;
 import dto.UserRegisterDTO;
 
@@ -12,10 +12,10 @@ public class ModifySgtView {
 		while(true) {
 			Scanner sc = new Scanner(System.in);
 			UserRegisterDAO urdao = new UserRegisterDAO();
-			ArrayList<UserRegisterDTO> urList = urdao.searchList();
+			ArrayList<UserRegisterDTO> urList = urdao.getList();
 			System.out.println("┏등록 대기 중\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 			for (UserRegisterDTO ur : urList) {
-				if(ur.is_register.equalsIgnoreCase("N")) {
+				if(ur.is_register.equalsIgnoreCase("N")&&ur.is_comment==null) {
 					System.out.println(String.format("📃등록 번호 : %d / %s(%s)\n", ur.register_num, ur.restaurant_name,
 							ur.category_name));
 				}
@@ -51,8 +51,8 @@ public class ModifySgtView {
 							sc = new Scanner(System.in);
 							newData = sc.nextLine();
 							if(choiceCol==4) {
-								if(RegEx.validatePhone(newData)) {
-									newData = RegEx.phoneOnlyNumber(newData);
+								if(Check.validatePhone(newData)) {
+									newData = Check.phoneOnlyNumber(newData);
 								}else {
 									System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 									continue;

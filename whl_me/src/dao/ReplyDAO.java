@@ -18,6 +18,12 @@ public class ReplyDAO {
 		conn = DBConnection.getConnection();
 	}
 
+	/**
+	 * user가 작성한 reply 데이터들을 리스트로 받기 위한 메소드<br>
+	 * admin 모드에서는 선택한 user의 reply 데이터들을 리스트로 담아 반환<br>
+	 * @return
+	 * 조건(user_id)에 맞는 reply 데이터를 ReplyDTO로 포장하여 ArrayList에 담아 반환<br>
+	 */
 	public ArrayList<ReplyDTO> getList() {
 		ArrayList<ReplyDTO> result = new ArrayList<ReplyDTO>();
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
@@ -46,6 +52,14 @@ public class ReplyDAO {
 		return result;
 	}
 
+	/**
+	 * user 모드 또는 admin 모드에서 선택한 reply를 삭제하는 메소드<br>
+	 * 
+	 * @param reply_num 리뷰 번호
+	 * @return
+	 * 리뷰 삭제 성공 시 true<br>
+	 * 리뷰 삭제 실패 시 false<br>
+	 */
 	public boolean delete(int reply_num) {
 		String sql = "delete from reply where reply_num = ? and user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
@@ -61,6 +75,13 @@ public class ReplyDAO {
 		return false;
 	}
 	
+	/**
+	 * user 또는 admin 모드에서 선택한 리뷰 번호에 해당하는 reply 데이터가 있는지 확인<br>
+	 * @param reply_num 리뷰 번호
+	 * @return
+	 * 리뷰 번호에 해당하는 reply 데이터가 있는 경우 true<br>
+	 * 리뷰 번호에 해당하는 reply 데이터가 없는 경우 false<br>
+	 */
 	public boolean isReplyOn(int reply_num) {
 		String sql = "select * from reply where reply_num = ? and user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
@@ -77,6 +98,13 @@ public class ReplyDAO {
 		return false;
 	}
 
+	/**
+	 * user의 리뷰를 reply 테이블에 삽입하는 메소드<br>
+	 * @param newReply 리뷰 정보를 담고 있는 ReplyDTO
+	 * @return
+	 * reply 테이블에 데이터 추가 성공 시 true<br>
+	 * reply 테이블에 데이터 추가 실패 시 false<br>
+	 */
 	public boolean insert(ReplyDTO newReply) {
 		//comment, score, user_id, restaurant_id, book_num
 		String sql = "insert into reply(reply_comment,reply_score,user_id,restaurant_id,book_num) values(?,?,?,?,?)";

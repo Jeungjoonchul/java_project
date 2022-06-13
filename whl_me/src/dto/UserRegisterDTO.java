@@ -1,6 +1,6 @@
 package dto;
 
-import dao.RegEx;
+import dao.Check;
 
 public class UserRegisterDTO {
 	public int register_num;
@@ -14,6 +14,7 @@ public class UserRegisterDTO {
 	public String user_id;
 
 	public UserRegisterDTO() {
+
 	}
 
 	public UserRegisterDTO(String restaurant_name, String restaurant_address, String category_name,
@@ -40,7 +41,7 @@ public class UserRegisterDTO {
 		String infoUR = "";
 		infoUR += "┏" + register_num + "번의 추천 상태\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n";
 		infoUR += String.format("음식점 이름 : %s(%s)\n", restaurant_name, category_name);
-		restaurant_phone = RegEx.regPhone(restaurant_phone);
+		restaurant_phone = Check.regPhone(restaurant_phone);
 		infoUR += String.format("주소 : %s / 전화번호 : %s\n", restaurant_address, restaurant_phone);
 		infoUR += String.format("추천 사유 : %s\n", reg_description);
 		if (is_comment == null) {

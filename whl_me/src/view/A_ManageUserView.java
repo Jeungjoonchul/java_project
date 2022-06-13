@@ -31,7 +31,7 @@ public class A_ManageUserView {
 				String inputData = sc.next();
 				// 회원 리스트(검색어를 포함하는)
 				ArrayList<UserDTO> ul = new ArrayList<UserDTO>();
-				ul = udao.getUserList(choice, inputData);
+				ul = udao.getList(choice, inputData);
 				if (ul.size() == 0) {
 					System.out.println("※검색된 유저가 없습니다. 다른 검색어로 다시 시도해주세요.");
 					continue;
@@ -43,8 +43,7 @@ public class A_ManageUserView {
 						String user = String.format("%d. %s", ul.indexOf(result) + 1, result.user_id);
 						System.out.println(user);
 					}
-					
-					
+
 					System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 					System.out.print("■번호 선택 : ");
 					choice = sc.nextInt();

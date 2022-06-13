@@ -1,19 +1,23 @@
 package test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.regex.Pattern;
 
-import dao.RegEx;
-import dto.RestaurantDTO;
-import dto.UserDTO;
+import dao.Check;
 
 public class Test2 {
 	public static void main(String[] args) {
-		
+		while(true) {
+			//입력 형식 확인
+			System.out.print("값 입력 : ");
+			String input = new Scanner(System.in).next();
+			if(Check.validateAddress(input)) {
+				System.out.println("성공");
+				System.out.println(input);
+			}else {
+				System.out.println("실패");
+				System.out.println(input);
+			}
+		}
+			
 	}
 }

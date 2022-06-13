@@ -19,7 +19,7 @@ public class SgtListView {
 			
 			Scanner sc = new Scanner(System.in);
 			UserRegisterDAO urdao = new UserRegisterDAO();
-			ArrayList<UserRegisterDTO> urList = urdao.searchList();
+			ArrayList<UserRegisterDTO> urList = urdao.getList();
 			System.out.println("================");
 			System.out.println("🍜내 등록 현황 보기🍣");
 			System.out.println("================");

@@ -1,6 +1,6 @@
 package dto;
 
-import dao.RegEx;
+import dao.Check;
 
 public class BookDTO {
 	public int book_num;

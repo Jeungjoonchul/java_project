@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-import dao.RegEx;
+import dao.Check;
 import dao.UserDAO;
 
 public class UpdateUserView {
@@ -42,7 +42,7 @@ public class UpdateUserView {
 				} else {
 					System.out.println("※현재 비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요!");
 				}
-			} else if (!(1<=choice&&choice<=8)) {
+			} else if (!(1 <= choice && choice <= 8)) {
 				System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 			} else if (choice == 7) {
 				System.out.println("■좋아하는 카테고리의 숫자를 띄어쓰기 없이 입력해주세요.");
@@ -50,42 +50,26 @@ public class UpdateUserView {
 				System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
 				System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
 				sc = new Scanner(System.in);
-				String choiceCate = sc.next();
-				boolean checkCate = true;
+				String choiceCate = sc.nextLine();
 				String newData = "";
 				String[] cate = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
-				if (RegEx.validateNumber(choiceCate)) {
+				if (Check.valiadateNumber_choiceMulti(choiceCate, 1, 6)) {
+
 					for (int i = 0; i < choiceCate.length(); i++) {
-						if (49 > choiceCate.codePointAt(i) || choiceCate.codePointAt(i) > 54) {
-							checkCate = false;
-							break;
-						}
-						//추가(1111 입력 하는 경우 등)
-						for (int j = i+1; j < choiceCate.length(); j++) {
-							if(choiceCate.codePointAt(i)==choiceCate.codePointAt(j)) {
-								checkCate=false;
-								break;
-							}
-						}
-					}
-					if (checkCate) {
-						for (int i = 0; i < choiceCate.length(); i++) {
-							if (choiceCate.length() - 1 == i) {
-								newData += cate[(choiceCate.codePointAt(i)) - 48];
-							} else {
-								newData += cate[(choiceCate.codePointAt(i)) - 48] + ",";
-							}
-						}
-						if (udao.update(choice, newData)) {
-							System.out.println("◎좋아하는 음식 카테고리 변경이 완료되었습니다.");
-							break;
+						if (choiceCate.length() - 1 == i) {
+							newData += cate[(choiceCate.codePointAt(i)) - 48];
 						} else {
-							System.out.println("※좋아하는 음식 카테고리 변경이 실패하였습니다.");
-							break;
+							newData += cate[(choiceCate.codePointAt(i)) - 48] + ",";
 						}
-					} else {
-						System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 					}
+					if (udao.update(choice, newData)) {
+						System.out.println("◎좋아하는 음식 카테고리 변경이 완료되었습니다.");
+						break;
+					} else {
+						System.out.println("※좋아하는 음식 카테고리 변경이 실패하였습니다.");
+						break;
+					}
+
 				} else {
 					System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 				}
@@ -105,8 +89,8 @@ public class UpdateUserView {
 					}
 					break;
 				case 3:
-					if (RegEx.validatePhone(newData)) {
-						newData = RegEx.phoneOnlyNumber(newData);
+					if (Check.validatePhone(newData)) {
+						newData = Check.phoneOnlyNumber(newData);
 					} else {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 						continue;
@@ -120,7 +104,7 @@ public class UpdateUserView {
 					break;
 				case 5:
 					// asdf1234@naver.com
-					if (!RegEx.validateEmail(newData)) {
+					if (!Check.validateEmail(newData)) {
 						System.out.println("※올바른 이메일 형식이 아닙니다. 확인 후 다시 시도해주세요!");
 						continue;
 					}

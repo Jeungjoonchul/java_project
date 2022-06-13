@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.BookDAO;
-import dao.RegEx;
+import dao.Check;
 import dao.RestaurantDAO;
 import dao.Session;
 import dto.BookDTO;
@@ -21,7 +21,7 @@ public class CurrentBookView {
 			RestaurantDAO rdao = new RestaurantDAO();
 			//현재 예약 내역을 보기 위해 매개변수로 "current"설정
 			String moment = "current";
-			bookList = bdao.getBookList(moment);
+			bookList = bdao.getList(moment);
 			if (bookList.size() == 0) {
 				System.out.println("※예약 내역이 없습니다.");
 				break;

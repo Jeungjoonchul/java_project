@@ -3,7 +3,7 @@ package view;
 import java.util.Scanner;
 
 import dao.BookDAO;
-import dao.RegEx;
+import dao.Check;
 import dao.ReplyDAO;
 import dto.ReplyDTO;
 
@@ -56,7 +56,7 @@ public class InsertReplyView {
 						break;
 					case 1:
 
-						if (RegEx.validateScore(inputData)) {
+						if (Check.validateScore(inputData)) {
 							newReply.reply_score = Integer.parseInt(inputData);
 							i++;
 						} else {

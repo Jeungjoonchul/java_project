@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import dao.RegEx;
+import dao.Check;
 import dao.RestaurantDAO;
 import dao.UserRegisterDAO;
 import dto.RestaurantDTO;
@@ -63,7 +63,7 @@ public class Test {
 				inputData = sc.nextLine();
 				System.out.println(datas[choice - 2] + " -> " + inputData);
 				if (choice == 5) {
-					datas[choice - 2] = RegEx.phoneOnlyNumber(inputData);
+					datas[choice - 2] = Check.phoneOnlyNumber(inputData);
 				}
 				datas[choice - 2] = inputData;
 //				switch (choice) {
@@ -97,15 +97,15 @@ public class Test {
 				System.out.println("정말 이대로 등록 하실래요?(Y/N)");
 				String checkInsert = sc.next();
 				if (checkInsert.equalsIgnoreCase("Y")) {
-					if (urdao.insert(result, 6, "Y", register_num)) {
-
-						System.out.println("등록 성공");
-						break;
-
-					} else {
-						System.out.println("음식점 등록 실패 ");
-						break;
-					}
+//					if (urdao.insert(result, 6, "Y", register_num)) {
+//
+//						System.out.println("등록 성공");
+//						break;
+//
+//					} else {
+//						System.out.println("음식점 등록 실패 ");
+//						break;
+//					}
 				} else if (checkInsert.equalsIgnoreCase("N")) {
 					System.out.println("추천 음식점 등록을 취소합니다.");
 					break;
