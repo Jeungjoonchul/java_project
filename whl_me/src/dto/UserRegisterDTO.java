@@ -10,7 +10,7 @@ public class UserRegisterDTO {
 	public String restaurant_phone;
 	public String reg_description;
 	public String is_register;
-	public String is_comment;
+	public String admin_comment;
 	public String user_id;
 
 	public UserRegisterDTO() {
@@ -39,16 +39,15 @@ public class UserRegisterDTO {
 	@Override
 	public String toString() {
 		String infoUR = "";
-		infoUR += "┏" + register_num + "번의 추천 상태\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n";
-		infoUR += String.format("음식점 이름 : %s(%s)\n", restaurant_name, category_name);
-		restaurant_phone = Check.regPhone(restaurant_phone);
-		infoUR += String.format("주소 : %s / 전화번호 : %s\n", restaurant_address, restaurant_phone);
-		infoUR += String.format("추천 사유 : %s\n", reg_description);
-		if (is_comment == null) {
-			is_comment = "관리자 확인 후 작성 예정";
+
+		infoUR += String.format("┃ 음식점 이름 : %s(%s)\n", restaurant_name, category_name);
+		infoUR += String.format("┃ 주소 : %s / 전화번호 : %s\n", restaurant_address, Check.regPhone(restaurant_phone));
+		infoUR += String.format("┃ 추천 사유 : %s\n", reg_description);
+		if (admin_comment == null) {
+			admin_comment = "관리자 확인 후 작성 예정";
 		}
-		infoUR += String.format("의견 : %s\n", is_comment);
-		infoUR += "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n";
+		infoUR += String.format("┃ 의견 : %s", admin_comment);
+
 		return infoUR;
 	}
 }

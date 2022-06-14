@@ -9,7 +9,7 @@ public class DeleteUserView {
 			while(true) {
 				Scanner sc = new Scanner(System.in);
 				UserDAO udao = new UserDAO();
-				System.out.println("⚠회원 탈퇴 시 회원님의 모든 정보가 삭제됩니다.⚠");
+				System.out.println("⚠회원 탈퇴 시 회원님의 모든 정보가 삭제됩니다⚠");
 				System.out.print("■정말 회원 탈퇴를 하시겠습니까?(Y/N) : ");
 				String check = sc.next();
 				if(check.equalsIgnoreCase("Y")) {

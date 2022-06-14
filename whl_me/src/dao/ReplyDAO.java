@@ -115,7 +115,18 @@ public class ReplyDAO {
 			ps.setString(3, newReply.user_id);
 			ps.setInt(4, newReply.restaurant_id);
 			ps.setInt(5, newReply.book_num);
-			return ps.executeUpdate()==1;
+			if(ps.executeUpdate()==1) {
+				BookDAO bdao = new BookDAO();
+				int book_num = newReply.book_num;
+				if(bdao.update(book_num, 3, "Y")) {
+					return true;
+				}else {
+					sql = "delete from reply order by reply_num desc limit 1";
+					ps = conn.prepareStatement(sql);
+					ps.executeUpdate();
+					return false;
+				}
+			}
 		} catch (SQLException e) {}
 		return false;
 	}

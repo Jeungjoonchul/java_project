@@ -59,7 +59,7 @@ public class BookDAO {
 	//메소드명 변경 searchList => getBookList => getList
 	public ArrayList<BookDTO> getList(String moment) {
 		ArrayList<BookDTO> result = new ArrayList<BookDTO>();
-		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule,  b.user_id, b.restaurant_id, b.book_expired from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where user_id = ?";
+		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule,  b.user_id, b.restaurant_id, b.has_reply from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where user_id = ?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
 		try {
 			ps = conn.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class BookDAO {
 						bl.book_schedule = rs.getString("book_schedule");
 						bl.user_id = rs.getString("user_id");
 						bl.restaurant_id = rs.getInt("restaurant_id");
-						bl.book_expired = rs.getString("book_expired");
+						bl.has_reply = rs.getString("has_reply");
 						result.add(bl);
 					}
 					
@@ -114,7 +114,7 @@ public class BookDAO {
 						bl.book_schedule = rs.getString("book_schedule");
 						bl.user_id = rs.getString("user_id");
 						bl.restaurant_id = rs.getInt("restaurant_id");
-						bl.book_expired = rs.getString("book_expired");
+						bl.has_reply = rs.getString("has_reply");
 						result.add(bl);
 					}
 				}
@@ -127,7 +127,7 @@ public class BookDAO {
 	
 	/**
 	 * user가 저장한 book(예약) 중 하나를 선택<br>
-	 * 선택된 결과를 "selectedBook"의 key로 {@link dao.Session}에 저장<br>
+	 * 선택된 예약을 한 음식점 정보를 "selectedBook"의 key로 {@link dao.Session}에 저장<br>
 	 * @param book_num 예약 번호
 	 * @return
 	 * 음식점 이름을 포함한 book 데이터를 BookDTO로 포장하여 반환<br>
@@ -135,7 +135,7 @@ public class BookDAO {
 	//메소드명 변경 selectBookedRest => select
 	public BookDTO select(int book_num) {
 		BookDTO result = new BookDTO();
-		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule, b.user_id, b.restaurant_id, b.book_expired from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where book_num=? and user_id=?";
+		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule, b.user_id, b.restaurant_id, b.has_reply from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where book_num=? and user_id=?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
 
 		try {
@@ -149,7 +149,7 @@ public class BookDAO {
 				result.book_date=rs.getString("book_date");//0
 				result.book_schedule=rs.getString("book_schedule");//0
 				result.book_companion_number=rs.getInt("book_companion_number");//0
-				result.book_expired=rs.getString("book_expired");//0
+				result.has_reply=rs.getString("has_reply");//0
 				result.user_id=rs.getString("user_id");//0
 				result.restaurant_id=rs.getInt("restaurant_id");//0
 				result.restaurant_name=rs.getString("restaurant_name");
@@ -190,7 +190,7 @@ public class BookDAO {
 	/**
 	 * 선택한 book(예약) 데이터의 값 변경<br>
 	 * user 모드에서 예약 인원, 예약 날짜 변경 가능<br>
-	 * book_expired는 해당 예약에 대해 리뷰 작성 시 'N'에서 'Y'로 수정<br>
+	 * has_reply는 해당 예약에 대해 리뷰 작성 시 'N'에서 'Y'로 수정<br>
 	 * 
 	 * @param book_num 예약 번호
 	 * @param choice 바꾸고자 하는 데이터의 번호(1. 예약 인원 / 2. 예약 날짜 / 3. 리뷰 작성 여부)
@@ -200,7 +200,7 @@ public class BookDAO {
 	 * 데이터 변경 실패 시 false<br>
 	 */
 	public boolean update(int book_num, int choice, String newData) {
-		String[] cols = { "", "book_companion_number", "book_schedule", "book_expired" };
+		String[] cols = { "", "book_companion_number", "book_schedule", "has_reply" };
 		String sql = "Update book set " + cols[choice] + " = ? where book_num=? and user_id=?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
 		try {
@@ -221,17 +221,17 @@ public class BookDAO {
 
 	/**
 	 * 현재 시점으로부터 과거의 예약 중 리뷰 작성 가능한 예약을 찾는 메소드<br>
-	 * book_expired가 'N'인 예약만 ArrayList에 담아 반환<br>
+	 * has_reply가 'N'인 예약만 ArrayList에 담아 반환<br>
 	 * 같은 클래스에 있는 getList 메소드를 이용하여 과거의 예약 리스트를 뽑고 
-	 * ArrayList에 있는 BookDTO 객체의 book_expired가 'N'인 BookDTO 객체만 다시 ArrayList에 담아 반환<br>
+	 * ArrayList에 있는 BookDTO 객체의 has_reply가 'N'인 BookDTO 객체만 다시 ArrayList에 담아 반환<br>
 	 * @return
-	 * book_expired가 'N'인 데이터들을 ArrayList에 담아 반환<br>
+	 * has_reply가 'N'인 데이터들을 ArrayList에 담아 반환<br>
 	 */
 	public ArrayList<BookDTO> notHasReplyBook() {
 		ArrayList<BookDTO> pastBookList = this.getList("past");
 		ArrayList<BookDTO> result = new ArrayList<BookDTO>();
 		for (BookDTO pastBook : pastBookList) {
-			if (pastBook.book_expired.equalsIgnoreCase("N")) {
+			if (pastBook.has_reply.equalsIgnoreCase("N")) {
 				result.add(pastBook);
 			}
 		}

@@ -10,17 +10,19 @@ import dto.UserDTO;
 
 public class LoginView {
 	public LoginView() {
-		Scanner sc = new Scanner(System.in);
+		
 		UserDAO udao = new UserDAO();
 		SMS sms = new SMS();
+		System.out.println("");
 		System.out.println("=========");
 		System.out.println("🍜로그인🍣");
 		System.out.println("=========");
-
+		System.out.println("");
 		while (true) {
 			System.out.println("■메뉴를 선택하세요.");
 			System.out.println("1. 로그인 / 2. 아이디 찾기 / 3. 비밀 번호 찾기 / 4. 나가기");
-			String choice = sc.nextLine();
+			Scanner sc = new Scanner(System.in);
+			String choice = sc.next();
 			if (Check.validateNumber_choiceOne(choice, 1, 4)) {
 				if (Integer.parseInt(choice) == 4) {
 					System.out.println("💤현재 페이지를 종료합니다.");

@@ -93,7 +93,7 @@ public class Check {
 	 * 02-1234-56789-> false(자리수 많음)<br>
 	 */
 	public static boolean validatePhone(String phone) {
-		String pattern = "^[0-9-.]{8,14}";
+		String pattern = "^[0-9-.]{8,14}$";
 		if (Pattern.matches(pattern, phone)) {
 			String pon = phoneOnlyNumber(phone);
 			if(pon.startsWith("02")) {
@@ -103,7 +103,7 @@ public class Check {
 				pattern = "^([0-9]{4})([-.])?([0-9]{4})";
 				return Pattern.matches(pattern, phone);
 			}else {
-				pattern = "([0-9]{3,4})([-.])?([0-9]{3,4})([-.])?([0-9]{4})$";
+				pattern = "^([0-9]{3,4})([-.])?([0-9]{3,4})([-.])?([0-9]{4})$";
 				return Pattern.matches(pattern, phone);
 			}
 		}
@@ -290,8 +290,10 @@ public class Check {
 	 * 그 외				-> false<br>
 	 */
 	public static boolean validateNumber_choiceOne(String number, int firstNum, int lastNum) {
-		if(validateNumber(number)&&(firstNum<=Integer.parseInt(number)&&Integer.parseInt(number)<=lastNum)) {
-			return true;
+		if(validateNumber(number)) {
+			if(validateNumber(number)&&(firstNum<=Integer.parseInt(number)&&Integer.parseInt(number)<=lastNum)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -304,7 +306,7 @@ public class Check {
 	 * 그 외(공백 포함) false<br>
 	 */
 	public static boolean validateName(String user_name) {
-		String pattern = "^[가-힣]{2,17}+";
+		String pattern = "^[가-힣]{2,17}$";
 		if(Pattern.matches(pattern, user_name)) {
 			return true;
 		}
@@ -320,7 +322,7 @@ public class Check {
 	 * 그 외 false<br>
 	 */
 	public static boolean validateID(String user_id) {
-		String pattern = "^[a-zA-Z0-9]{4,20}+";
+		String pattern = "^[a-zA-Z0-9]{4,20}$";
 		if(Pattern.matches(pattern, user_id)) {
 			return true;
 		}
@@ -336,7 +338,7 @@ public class Check {
 	 * 그 외 false<br>
 	 */
 	public static boolean validateNickname(String user_nickname) {
-		String pattern = "^[a-zA-Z0-9가-힣]{2,10}+";
+		String pattern = "^[a-zA-Z0-9가-힣]{2,10}$";
 		if(Pattern.matches(pattern, user_nickname)) {
 			return true;
 		}
@@ -352,7 +354,7 @@ public class Check {
 	 * 그 외 false<br>
 	 */
 	public static boolean validatePW(String user_pw) {
-		String pattern = "^[a-zA-Z0-9]{8,20}+";
+		String pattern = "^[a-zA-Z0-9]{8,20}$";
 		if(Pattern.matches(pattern, user_pw)) {
 			return true;
 		}
@@ -361,34 +363,35 @@ public class Check {
 	
 	/**
 	 * 입력한 주소 형식 확인 메소드<br>
-	 * 특수문자를 제외하여 사용 가능하며 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
-	 * 길이는 최대 30자리까지 입력 가능<br>
+	 * 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
+	 * 길이는 최대 100자리까지 입력 가능<br>
 	 * @param address_data 주소와 관련된 데이터
 	 * @return
-	 * 30자리 이내이며 특수 문자를 제외한 문자를 사용하며, 첫 자리와 끝자리가 공백이 아닌 경우 true<br>
+	 * 100자리 이내이며 첫 자리와 끝자리가 공백이 아닌 경우 true<br>
 	 * 그 외 경우 false<br>
 	 */
 	public static boolean validateAddress(String address_data) {
-		String pattern = "^([a-zA-Z0-9가-힣]{1})([a-zA-Z0-9가-힣\\s]{1,29})+";
+		String pattern = "^([\\S]{1})(.{1,99})$";
 		if(Pattern.matches(pattern, address_data)) {
 			if((address_data.charAt(address_data.length()-1)+0)!=32) {
 				return true;
 			}
 		}
 		return false;
+
 	}
 	
 	/**
 	 * 음식점 이름 형식 확인 메소드<br>
-	 * 특수문자를 제외하여 사용 가능하며 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
-	 * 길이는 최대 20자리까지 입력 가능<br>
+	 * 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
+	 * 길이는 최대 30자리까지 입력 가능<br>
 	 * @param restaurant_name restaurant의 이름
 	 * @return
-	 * 20자리 이내이며 특수 문자를 제외한 문자를 사용하며, 첫 자리와 끝자리가 공백이 아닌 경우 true<br>
+	 * 30자리 이내이며 첫 자리와 끝자리가 공백이 아닌 경우 true<br>
 	 * 그 외 경우 false<br>
 	 */
 	public static boolean validateRestName(String restaurant_name) {
-		String pattern = "^([a-zA-Z0-9가-힣]{1})([a-zA-Z0-9가-힣\\s]{1,19})+";
+		String pattern = "^([\\S]{1})(.{1,29})$";
 		if(Pattern.matches(pattern, restaurant_name)) {
 			if((restaurant_name.charAt(restaurant_name.length()-1)+0)!=32) {
 				return true;

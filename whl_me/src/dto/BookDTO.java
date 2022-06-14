@@ -7,7 +7,7 @@ public class BookDTO {
     public String book_date;
     public String book_schedule;
     public int book_companion_number;
-    public String book_expired;
+    public String has_reply;
     public String user_id;
     public int restaurant_id;
     public String restaurant_name;
@@ -22,7 +22,7 @@ public class BookDTO {
 
 	@Override
 	public String toString() {
-		String result=String.format("⏲%d. %s(%d명) / 예약일시 : %s\n", book_num, restaurant_name,
+		String result=String.format("┃ ⏲%d. %s(%d명) / 예약일시 : %s", book_num, restaurant_name,
 				book_companion_number, book_schedule);
 		return result;
 	}

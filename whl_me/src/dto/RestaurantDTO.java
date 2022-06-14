@@ -35,20 +35,19 @@ public class RestaurantDTO {
 	public String toString() {
 		String restInfo = "";
 
-		restInfo += String.format("%s (%s)\n", restaurant_name, category_name);
-		restaurant_phone = Check.regPhone(restaurant_phone);
-		restInfo += String.format("%s / %s\n", restaurant_address, restaurant_phone);
+		restInfo += String.format("┃ %s (%s)\n", restaurant_name, category_name);
+		restInfo += String.format("┃ %s / %s\n", restaurant_address, Check.regPhone(restaurant_phone));
 
-		restInfo += String.format("예약 가능 인원 : %d\n", restaurant_capacity);
+		restInfo += String.format("┃ 예약 가능 인원 : %d\n", restaurant_capacity);
 		if (restaurant_close == null) {//수정 restaurant_close ="" 삭제
 			restaurant_close = "휴무 없음";
 		}
-		restInfo += String.format("휴무일 : %s\n", restaurant_close);
+		restInfo += String.format("┃ 휴무일 : %s\n", restaurant_close);
 		if (restaurant_description.equals("") || restaurant_description == null) {
 			restaurant_description = "설명 없음";
 		}
-		restInfo += String.format("%s\n", restaurant_description);
-		restInfo += String.format("♡%d / ☆%d(%d)\n", restaurant_like_cnt, avg_score, reply_cnt);
+		restInfo += String.format("┃ %s\n", restaurant_description);
+		restInfo += String.format("┃ ❤%d / ⭐%d(%d)", restaurant_like_cnt, avg_score, reply_cnt);
 		return restInfo;
 	}
 }

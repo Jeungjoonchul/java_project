@@ -17,7 +17,7 @@ public class SMS {
 	public String sendCode(String user_phone) {
 		String api_key = "NCSADWN71F8APDIX";
 		String api_secret = "QQ0O55HVMGRRRRRONBWVKBIKSIS4ZLCD";
-		Message coolsms = new Message(api_key, api_secret);
+//		Message coolsms = new Message(api_key, api_secret);
 
 		// 4 params(to, from, type, text) are mandatory. must be filled
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -36,16 +36,16 @@ public class SMS {
 			result += source.charAt(idx);
 		}
 		params.put("text", "아래 코드를 입력하세요\n" + result);
-		try {
-			JSONObject obj = (JSONObject) coolsms.send(params);
+//		try {
+//			JSONObject obj = (JSONObject) coolsms.send(params);
 //	      System.out.println(obj.toString());
 //			System.out.println("문자 보내기 성공!");
 			return result;
-		} catch (CoolsmsException e) {
+//		} catch (CoolsmsException e) {
 //			System.out.println(e.getMessage());
 //			System.out.println(e.getCode());
 //			System.out.println("문자 보내기 실패!");
-		}
-		return null;
+//		}
+//		return null;
 	}
 }

@@ -10,18 +10,26 @@ public class JoinView {
 	public JoinView() {
 		String[] datas = new String[5]; // 입력 받은 값(사용자 입력한 값)
 		String[] inputInfo = { "아이디", "비밀번호", "이름", "닉네임", "휴대폰번호",""}; // 입력 받을 값(사용자에게 입력 유도)
+		System.out.println("");
 		System.out.println("==========");
 		System.out.println("🍜회원가입🍣");
 		System.out.println("==========");
+		System.out.println("");
 		// 입력 받은 값의 유효성 검사 통과 시 i값 1증가하는 반복문
 		for (int i = 0; i < inputInfo.length;) {
 			UserDAO udao = new UserDAO();
 			Scanner sc = new Scanner(System.in);
 			if (i == 5) {
 				UserDTO newUser = new UserDTO(datas);
-				System.out.println("┏입력한 정보	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println(newUser);
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				String result = "회원 가입 정보\n";
+				result += String.format("┃ 아이디\t:%s\n", newUser.user_id);
+				result += String.format("┃ 이름\t:%s\n", newUser.user_name);
+				result += String.format("┃ 닉네임\t:%s\n", newUser.user_nickname);
+				result += String.format("┃ 전화번호\t:%s", Check.regPhone(newUser.user_phone));
+				
+				System.out.println("┏입력한 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+				System.out.println(result);
+				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 				System.out.print("입력한 정보가 맞습니까?(Y/N) : ");
 				String checkJoin = sc.next();
 				if (checkJoin.equalsIgnoreCase("Y")) {
@@ -40,7 +48,7 @@ public class JoinView {
 
 			} else {
 				System.out.print("■" + inputInfo[i] + "(종료는 '!'을 입력하세요) : ");
-				String inputData = sc.nextLine();
+				String inputData = sc.next();
 				if (inputData.equals("!")) {
 					System.out.println("🍜회원 가입을 종료합니다🍣");
 					break;

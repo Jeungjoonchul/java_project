@@ -28,12 +28,12 @@ public class A_ManageUserReply {
 				System.out.println("※해당 유저의 작성된 리뷰가 없습니다.");
 				break;
 			}else {
-				System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+				System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				System.out.println("┃"+((UserDTO) Session.getData("selectedUser")).user_id+"유저가 작성한 리뷰");
 				for (ReplyDTO result : url) {
 					System.out.println(result);
 				}
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 				System.out.println("■메뉴를 선택하세요.");
 				System.out.println("1. 유저 리뷰 삭제하기 / 2. 나가기");
 				Scanner sc = new Scanner(System.in);
