@@ -20,14 +20,11 @@ public class A_InsertSgtView {
 		datas[5] = null;
 		datas[6] = null;
 		String[] inputInfo = { "음식점 이름", "카테고리", "음식점 주소", "음식점 전화번호", "예약 가능 인원", "음식점 휴무일", "음식점 설명" };
-		// 카테고리만 수정하는 경우
-		// datas[0],datas[1],datas[4]
 		while (true) {
 			RestaurantDTO newRest = new RestaurantDTO(datas);
-
-			System.out.println("┏추천 음식점 입력 상태\t━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+			System.out.println("┏추천 음식점 입력 상태\t\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 			System.out.println(newRest);
-			System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+			System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 			System.out.println("■메뉴를 선택하세요.");
 			System.out.println("1. 전체 수정 / 2. 일부 수정 / 3. 승인 / 4. 나가기");
 			Scanner sc = new Scanner(System.in);
@@ -35,13 +32,13 @@ public class A_InsertSgtView {
 			if (Check.validateNumber_choiceOne(choice, 1, 4)) {
 				if (Integer.parseInt(choice) == 1) {
 					// 전체 수정
-					for (int i = 0; i < inputInfo.length - 3; i++) {
+					for (int i = 0; i < inputInfo.length - 3;) {
 						if (i == 1) {
 							System.out.println("■카테고리를 선택해주세요.");
 							System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
 							System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
 						} else {
-							System.out.print("■" + inputInfo[i] + " 뒤로가기는 '!') : ");
+							System.out.print("■" + inputInfo[i] + "(뒤로가기는 '!') : ");
 						}
 						sc = new Scanner(System.in);
 						String inputData = sc.nextLine();
@@ -177,12 +174,12 @@ public class A_InsertSgtView {
 					}
 				} else if (Integer.parseInt(choice) == 3) {
 					// 승인
-					for (int i = 4; i < inputInfo.length; i++) {
+					for (int i = 4; i < inputInfo.length;) {
 						if (i == 5) {
 							System.out.println("■휴무일에 해당하는 숫자를 띄어쓰기 없이 선택해주세요.(ex : 토,일 -> '67'입력)");
 							System.out.println("1. 월 / 2. 화 / 3. 수 / 4. 목 / 5. 금 / 6. 토 / 7. 일 / 8. 휴무없음 ");
 						} else {
-							System.out.print("■" + inputInfo[i] + " 뒤로가기는 '!') : ");
+							System.out.print("■" + inputInfo[i] + "(뒤로가기는 '!') : ");
 						}
 						sc = new Scanner(System.in);
 						String inputData = sc.nextLine();
@@ -201,7 +198,7 @@ public class A_InsertSgtView {
 							break;
 						case 5:
 							if (inputData.equals("8")) {
-								inputData = "휴무없음";
+								inputData = "휴무 없음";
 							} else if (Check.valiadateNumber_choiceMulti(inputData, 1, 7)) {
 								String[] dow = { "", "월", "화", "수", "목", "금", "토", "일" };
 								String result = inputData;
@@ -225,8 +222,13 @@ public class A_InsertSgtView {
 						System.out.print("■입력하시려는 내용이 \"" + inputData + "\"이(가) 맞나요?(Y/N) : ");
 						String checkInput = sc.next();
 						if (checkInput.equalsIgnoreCase("Y")) {
-							if (i == 5) {
-								inputData = null;
+							if(i==4) {
+								inputData = inputData.replace("명", "");
+							}
+							else if (i == 5) {
+								if(inputData.equals("휴무 없음")) {
+									inputData = null;
+								}
 							}
 							datas[i] = inputData;
 							i++;
@@ -238,9 +240,9 @@ public class A_InsertSgtView {
 						}
 					}
 					newRest = new RestaurantDTO(datas);
-					System.out.println("┏입력한 음식점 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+					System.out.println("┏입력한 음식점 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 					System.out.println(newRest);
-					System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+					System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 					System.out.print("■추천한 유저에게 전하는 한마디를 작성해주세요 : ");
 					sc=new Scanner(System.in);
 					String admin_comment = sc.nextLine();

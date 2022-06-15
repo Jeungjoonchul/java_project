@@ -13,31 +13,32 @@ public class A_ManageSgtRestView {
 
 		while (true) {
 			Scanner sc = new Scanner(System.in);
+			System.out.println("");
 			System.out.println("==================");
 			System.out.println("🍜추천 음식점 관리하기🍣");
 			System.out.println("==================");
+			System.out.println("");
 			UserRegisterDAO urdao = new UserRegisterDAO();
 			ArrayList<UserRegisterDTO> ucs = urdao.getList();
 			if (ucs.size() == 0) {
 				System.out.println("※현재 확인하지 않은 추천 음식점이 없습니다. 현재 페이지를 종료합니다.");
 				break;
 			} else {
-				System.out.println("┏확인하지 않은 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println("┃등록 번호\t음식점 이름\t");
+				System.out.println("┏확인하지 않은 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				for (UserRegisterDTO ur : ucs) {
-					String result = String.format("┃%d\t%s\t\t%s", ur.register_num, ur.restaurant_name,
+					String result = String.format("┃ 📃등록 번호 %d. %s(추천 사유 : %s)", ur.register_num, ur.restaurant_name,
 							ur.reg_description);
 					System.out.println(result);
 				}
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 				System.out.print("■등록 번호를 선택하세요 : ");
 				String register_num = sc.next();
 				if (Check.validateNumber(register_num)) {
 					UserRegisterDTO ur = urdao.a_select(Integer.parseInt(register_num));
 					if (ur != null) {
-						System.out.println("┏선택된 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+						System.out.println("┏선택된 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 						System.out.println(ur);
-						System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+						System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 						System.out.println("■메뉴를 선택하세요.");
 						System.out.println("1. 추천 음식점 수정 & 승인 / 2. 추천 음식점 반려 / 3. 뒤로가기");
 						String choice = sc.next();

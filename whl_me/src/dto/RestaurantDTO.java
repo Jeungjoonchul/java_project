@@ -37,13 +37,14 @@ public class RestaurantDTO {
 
 		restInfo += String.format("┃ %s (%s)\n", restaurant_name, category_name);
 		restInfo += String.format("┃ %s / %s\n", restaurant_address, Check.regPhone(restaurant_phone));
-
 		restInfo += String.format("┃ 예약 가능 인원 : %d\n", restaurant_capacity);
-		if (restaurant_close == null) {//수정 restaurant_close ="" 삭제
+		
+		if (restaurant_close == null||restaurant_close.equals("")) {
 			restaurant_close = "휴무 없음";
 		}
 		restInfo += String.format("┃ 휴무일 : %s\n", restaurant_close);
-		if (restaurant_description.equals("") || restaurant_description == null) {
+		
+		if (restaurant_description == null||restaurant_description.equals("")) {
 			restaurant_description = "설명 없음";
 		}
 		restInfo += String.format("┃ %s\n", restaurant_description);

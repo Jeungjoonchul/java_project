@@ -334,4 +334,41 @@ public class RestaurantDAO {
 		}
 		return false;
 	}
+	
+	
+	public boolean a_delete(int restaurant_id) {
+		String sql = "delete from restaurant where restaurant_id = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, restaurant_id);
+			return ps.executeUpdate()==1;
+		} catch (SQLException e) {}
+		return false;
+	}
+	
+	public boolean a_update(int choiceCol, String newData,int restaurant_id) {
+		//1. 음식점 이름/2. 카테고리/3.주소 /4. 전화번호 /5. 예약가능 인원/6.휴무일/7.음식점 설명
+		
+		String[] cols= {"", "restaurant_name", "category_name","restaurant_address", "restaurant_phone","resturant_capacity","restaurant_close","restaurant_description"};
+		String sql = "update restaurant set "+cols[choiceCol]+" = ? where restaurant_id= ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newData);
+			ps.setInt(2, restaurant_id);
+			ps.executeUpdate();
+			ArrayList<RestaurantDTO> rl = new ArrayList<RestaurantDTO>();
+			int choice=(int) Session.getData("choice");
+			int choiceCate=(int) Session.getData("choiceCate");
+			int choiceSort=(int) Session.getData("choiceSort");
+			int limit=(int) Session.getData("limit");
+			
+			rl=this.getList(choice, choiceCate, choiceSort, limit);
+			Session.setData("restList", rl);
+			
+			return rl.size()!=0;
+		} catch (SQLException e) {
+		System.out.println(e);
+		}
+		return false;
+	}
 }

@@ -113,7 +113,7 @@ public class Check {
 
 	/**
 	 * String 타입의 날짜 유효성 및 형식 검사<br>
-	 * 형식은 "yy-MM-dd"<br>
+	 * 형식은 <em>"yy-MM-dd"</em><br>
 	 * 
 	 * @param date String 타입의 날짜("yyyy-MM-dd")
 	 * @return
@@ -140,7 +140,7 @@ public class Check {
 	
 	/**
 	 * String 타입의 시간 유효성 및 형식 검사<br>
-	 * 형식은 "HH:mm"<br>
+	 * 형식은 <em>"HH:mm"</em><br>
 	 * 
 	 * @param time String 타입의 시간("HH:mm")
 	 * @return
@@ -275,7 +275,7 @@ public class Check {
 	}
 	
 	/**
-	 * 제시된 선택 가능한 메뉴에서 하나의 값을 선택하는 경우에 String타입 값의 형식 검사<br>
+	 * 제시된 선택 가능한 메뉴에서 <em>하나의 값</em>을 선택하는 경우에 String타입 값의 형식 검사<br>
 	 * 
 	 * @param number String 타입의 정수
 	 * @param firstNum 제시된 선택 가능한 번호 중 첫번째 숫자
@@ -314,7 +314,7 @@ public class Check {
 	}
 	
 	/**
-	 * 회원 가입 시 user_id 입력 형식 확인 메서드<br>
+	 * 회원 가입 시 <em>user_id</em> 입력 형식 확인 메서드<br>
 	 * user_id는 영문자와 숫자만 입력가능하며 최소 4자리, 최대 20자리 입력 가능<br>
 	 * @param user_id user의 ID
 	 * @return
@@ -330,7 +330,7 @@ public class Check {
 	}
 	
 	/**
-	 * 회원 가입 시 user_nickname 입력 형식 확인 메서드<br>
+	 * 회원 가입 시 <em>user_nickname</em> 입력 형식 확인 메서드<br>
 	 * user_nickname은 공백 및 특수문자 사용 불가하며 최소 2자리, 최대 10자리 입력 가능<br>
 	 * @param user_nickname user의 닉네임
 	 * @return
@@ -346,7 +346,7 @@ public class Check {
 	}
 	
 	/**
-	 * 회원 가입 시 user_pw 입력 형식 확인 메서드<br>
+	 * 회원 가입 시 <em>user_pw</em> 입력 형식 확인 메서드<br>
 	 * 비밀번호는 영문자와 숫자를 조합하여 최소 8자리, 최대 20자리 입력 가능<br>
 	 * @param user_pw user의 비밀번호
 	 * @return
@@ -362,7 +362,7 @@ public class Check {
 	}
 	
 	/**
-	 * 입력한 주소 형식 확인 메소드<br>
+	 * 입력한 <em>주소</em> 형식 확인 메소드<br>
 	 * 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
 	 * 길이는 최대 100자리까지 입력 가능<br>
 	 * @param address_data 주소와 관련된 데이터
@@ -382,7 +382,7 @@ public class Check {
 	}
 	
 	/**
-	 * 음식점 이름 형식 확인 메소드<br>
+	 * <em>음식점 이름</em> 형식 확인 메소드<br>
 	 * 가장 첫 자리 및 마지막 자리에 공백 사용 불가<br>
 	 * 길이는 최대 30자리까지 입력 가능<br>
 	 * @param restaurant_name restaurant의 이름

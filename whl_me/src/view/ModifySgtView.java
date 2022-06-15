@@ -58,7 +58,7 @@ public class ModifySgtView {
 								break;
 							} else if (Integer.parseInt(choice) == 2) {
 								// 추천 음식점 삭제하기
-								System.out.println("■정말 삭제하시겠습니까?(Y / N)");
+								System.out.println("■정말 삭제하시겠습니까?(Y/N)");
 								String checkDelete = sc.next();
 								if (checkDelete.equalsIgnoreCase("Y")) {
 									if (urdao.delete(Integer.parseInt(register_num))) {

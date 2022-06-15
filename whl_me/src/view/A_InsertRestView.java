@@ -21,22 +21,23 @@ public class A_InsertRestView {
 		for (int i = 0; i < inputInfo.length;) {
 			if (i == 7) {
 				RestaurantDTO newRest = new RestaurantDTO(datas);
-				System.out.println("┏입력한 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+				System.out.println("┏입력한 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				System.out.println(newRest);
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println(
+						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 				System.out.print("■정말 등록하시겠습니까?(Y/N) : ");
 				String checkInsert = sc.next();
 				if (checkInsert.equalsIgnoreCase("Y")) {
 					if (rdao.insert(newRest)) {
 						System.out.println("◎음식점 등록이 완료되었습니다.");
-						break;
+						i++;
 					} else {
 						System.out.println("※음식점 등록에 실패하였습니다.");
-						break;
+						i++;
 					}
 				} else if (checkInsert.equalsIgnoreCase("N")) {
 					System.out.println("💤음식점 추가하기를 종료합니다.");
-					break;
+					i++;
 				} else {
 					System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 				}
@@ -50,17 +51,14 @@ public class A_InsertRestView {
 					System.out.println("■휴무일에 해당하는 숫자를 띄어쓰기 없이 선택해주세요.(ex : 토,일 -> '67'입력)");
 					System.out.println("1. 월 / 2. 화 / 3. 수 / 4. 목 / 5. 금 / 6. 토 / 7. 일 / 8. 휴무없음 ");
 				} else {
-					// 입력 받아야할 내용 순서대로 출력
 					System.out.print("■" + inputInfo[i] + " 나가기는 '!') : ");
 				}
-				// 스캐너로 사용자에게 입력 받기
 				sc = new Scanner(System.in);
 				String inputData = sc.nextLine();
 				if (inputData.equals("!")) {
 					System.out.println("💤음식점 추가하기를 종료합니다.");
 					break;
 				}
-				// 카테고리, 전화번호, 휴무일의 유효성 검사
 				switch (i) {
 				case 0:
 					// 음식점 이름
@@ -91,7 +89,7 @@ public class A_InsertRestView {
 				case 3:
 					// 음식점 전화번호
 					if (Check.validatePhone(inputData)) {
-						inputData = Check.phoneOnlyNumber(inputData);
+						inputData = Check.regPhone(inputData);
 					} else {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 						continue;
@@ -100,7 +98,6 @@ public class A_InsertRestView {
 				case 4:
 					// 예약 가능 인원
 					if (Check.validateNumber(inputData)) {
-						inputData = Check.regPhone(inputData);
 					} else {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 						continue;
@@ -134,8 +131,8 @@ public class A_InsertRestView {
 						if (i == 3) {
 							inputData = Check.phoneOnlyNumber(inputData);
 						} else if (i == 5) {
-							if(inputData.equals("휴무 없음")) {
-								inputData=null;
+							if (inputData.equals("휴무 없음")) {
+								inputData = null;
 							}
 						}
 						datas[i] = inputData;
