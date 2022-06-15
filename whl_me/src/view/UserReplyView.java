@@ -10,18 +10,20 @@ import dto.ReplyDTO;
 public class UserReplyView {
 	public UserReplyView() {
 		
-		System.out.println("");
-		System.out.println("=============");
-		System.out.println("🍜내 리뷰 관리🍣");
-		System.out.println("=============");
-		System.out.println("");
+		
 		while (true) {
 			ReplyDAO rpdao = new ReplyDAO();
 			ArrayList<ReplyDTO> url = new ArrayList<ReplyDTO>();
 			url = rpdao.getList();
+			System.out.println("");
+			System.out.println("=============");
+			System.out.println("🍜내 리뷰 관리🍣");
+			System.out.println("=============");
+			System.out.println("");
 			if (url.size() == 0) {
-				System.out.println("※작성한 리뷰가 없습니다.");
-				System.out.println("");
+				System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━┓");
+				System.out.println("┃  💥작성한 리뷰가 없습니다.	┃");
+				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━┛");
 			} else {
 				System.out.println("┏작성한 리뷰\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				for (ReplyDTO ur : url) {
@@ -46,7 +48,9 @@ public class UserReplyView {
 					case 2:
 						// 리뷰 삭제하기
 						if(url.size()==0) {
+							System.out.println("");
 							System.out.println("※삭제 가능한 리뷰가 없습니다. 리뷰 등록 후 이용해주세요.");
+							System.out.println("");
 						}else {
 							System.out.print("■리뷰 번호 : ");
 							int reply_num = sc.nextInt();

@@ -12,6 +12,7 @@ public class A_ManageUserView {
 
 	public A_ManageUserView() {
 		while (true) {
+			Session.setData("selectedUser", null);
 			UserDAO udao = new UserDAO();
 			System.out.println("");
 			System.out.println("==========");
@@ -47,11 +48,10 @@ public class A_ManageUserView {
 
 						System.out.println(
 								"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-						System.out.print("■번호 선택(나가기는 !) : ");
+						System.out.print("■번호 선택(뒤로 가기는 '!') : ");
 						choice = sc.next();
 						if (choice.equalsIgnoreCase("!")) {
-							System.out.println("💤회원 관리를 종료합니다.");
-							break;
+							continue;
 						} else if (Check.validateNumber(choice)) {
 							UserDTO selectedUser = ul.get(Integer.parseInt(choice) - 1);
 							if (selectedUser != null) {
