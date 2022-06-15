@@ -10,7 +10,11 @@ import dto.UserDTO;
 public class A_UpdateUserView {
 
 	public A_UpdateUserView() {
+
 		while (true) {
+			UserDTO user = (UserDTO) Session.getData("selectedUser");
+			String[] oldData = { "", user.user_name, user.user_nickname, user.user_phone, user.user_gender,
+					user.user_email };
 			UserDAO udao = new UserDAO();
 			System.out.println("■변경할 유저 정보를 선택하세요.");
 			System.out.println("1. 이름 / 2. 닉네임 / 3.휴대폰번호 / 4. 성별 / 5. 이메일주소 / 6. 나가기 ");
@@ -72,29 +76,30 @@ public class A_UpdateUserView {
 						break;
 					}
 					if (Integer.parseInt(choice) == 3) {
-						System.out.println("◎입력한 값 : " + Check.regPhone(inputData));
+						System.out.println("◎변경 이전 : " + Check.regPhone(oldData[Integer.parseInt(choice)])
+								+ " -> 변경된 내용 : " + Check.regPhone(inputData));
 					} else {
-						System.out.println("◎입력한 값 : " + inputData);
+						System.out
+								.println("◎변경 이전 : " + oldData[Integer.parseInt(choice)] + " -> 변경된 내용 : " + inputData);
 					}
 					System.out.println("■정말 수정 하시겠습니까?(Y/N)");
+					sc = new Scanner(System.in);
 					String checkUpdate = sc.next();
 					if (checkUpdate.equalsIgnoreCase("Y")) {
 						if (udao.update(Integer.parseInt(choice), inputData)) {
 							System.out.println("◎유저 정보 수정에 성공했습니다.");
-							UserDTO updatedUser = new UserDTO();
 							String user_id = ((UserDTO) Session.getData("selectedUser")).user_id;
-							updatedUser = udao.select(user_id);
+							user = udao.select(user_id);
 							System.out.println(
 									"┏변경 후 유저 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-							System.out.println(updatedUser);
+							System.out.println(user);
 							System.out.println(
 									"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 						} else {
 							System.out.println("※유저 정보 수정에 실패했습니다.");
 						}
 					} else if (checkUpdate.equalsIgnoreCase("N")) {
-						System.out.println("💤유저 정보 수정을 종료합니다.");
-						break;
+						System.out.println("💤유저 정보 수정을 취소합니다.");
 					} else {
 						System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 					}

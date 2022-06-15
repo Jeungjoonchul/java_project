@@ -29,7 +29,7 @@ public class SearchRestView {
 			String inputNum = sc.next();
 			if (Check.validateNumber_choiceOne(inputNum, 1, 5)) {
 
-				choice=inputNum;
+				choice = inputNum;
 				if (Integer.parseInt(inputNum) == 5) {
 					System.out.println("💤음식점 찾아보기를 종료합니다.");
 					break;
@@ -40,10 +40,10 @@ public class SearchRestView {
 					System.out.println("■카테고리를 설정하세요.");
 					System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
 					System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
-					inputNum= sc.next();
-					if (Check.valiadateNumber_choiceMulti(inputNum, 1, 6)) {
+					inputNum = sc.next();
+					if (Check.validateNumber_choiceOne(inputNum, 1, 6)) {
 						choiceCate = inputNum;
-					}else {
+					} else {
 						System.out.println("※잘못 입력하였습니다. 다시 시도해주세요!");
 						continue;
 					}
@@ -77,7 +77,8 @@ public class SearchRestView {
 
 				// 메소드명 변경 searchList -> getRestList
 				// getRestList 실행 시 조회된 음식점 리스트가 "restList" Session에 저장됨
-				resultList = rdao.getList(Integer.parseInt(choice), Integer.parseInt(choiceCate),Integer.parseInt(choiceSort), Integer.parseInt(limit));
+				resultList = rdao.getList(Integer.parseInt(choice), Integer.parseInt(choiceCate),
+						Integer.parseInt(choiceSort), Integer.parseInt(limit));
 				if (resultList.size() == 0) {
 					System.out.println("※조회된 식당이 없습니다.");
 				} else {

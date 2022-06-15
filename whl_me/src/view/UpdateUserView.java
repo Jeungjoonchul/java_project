@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import dao.Check;
@@ -10,7 +12,7 @@ import dto.UserDTO;
 public class UpdateUserView {
 	public UpdateUserView() {
 		while (true) {
-			UserDTO user = (UserDTO)Session.getData("loginUser");
+			UserDTO user = (UserDTO) Session.getData("loginUser");
 			System.out.println("■변경하려는 정보를 입력하세요.");
 			System.out
 					.println("1. 비밀번호 / 2. 닉네임 / 3. 휴대폰번호 / 4. 성별(M/F) / 5. 이메일 / 6. 주소 / 7. 좋아하는 음식 카테고리 / 8. 뒤로 가기");
@@ -18,10 +20,10 @@ public class UpdateUserView {
 			Scanner sc = new Scanner(System.in);
 			UserDAO udao = new UserDAO();
 			String choice = sc.next();
-			if(Check.validateNumber_choiceOne(choice, 1, 8)) {
+			if (Check.validateNumber_choiceOne(choice, 1, 8)) {
 				if (Integer.parseInt(choice) == 8) {
 					break;
-				}else if (Integer.parseInt(choice) == 1) {
+				} else if (Integer.parseInt(choice) == 1) {
 					System.out.print("■현재 비밀번호\t: ");
 					String oldPW = sc.next();
 					if (udao.checkPW(oldPW)) {
@@ -46,8 +48,8 @@ public class UpdateUserView {
 					} else {
 						System.out.println("※현재 비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요!");
 					}
-					
-				}else if (Integer.parseInt(choice) == 7) {
+
+				} else if (Integer.parseInt(choice) == 7) {
 					System.out.println("■좋아하는 카테고리의 숫자를 띄어쓰기 없이 입력해주세요.");
 					System.out.println("예)한식, 일식, 패스트푸드 -> 135");
 					System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
@@ -56,12 +58,14 @@ public class UpdateUserView {
 					String choiceCate = sc.nextLine();
 					String newData = "";
 					String[] cate = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
-					if (Check.valiadateNumber_choiceMulti(choiceCate, 1, 6)) {
-						for (int i = 0; i < choiceCate.length(); i++) {
+					if (Check.validateNumber_choiceMulti(choiceCate, 1, 6)) {
+						String[] sort_choiceCate = choiceCate.split("");
+						Arrays.sort(sort_choiceCate);
+						for (int i = 0; i < sort_choiceCate.length; i++) {
 							if (choiceCate.length() - 1 == i) {
-								newData += cate[(choiceCate.codePointAt(i)) - 48];
+								newData += cate[Integer.parseInt(sort_choiceCate[i])];
 							} else {
-								newData += cate[(choiceCate.codePointAt(i)) - 48] + ",";
+								newData += cate[Integer.parseInt(sort_choiceCate[i])] + ",";
 							}
 						}
 						if (udao.update(Integer.parseInt(choice), newData)) {
@@ -75,31 +79,31 @@ public class UpdateUserView {
 						System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 					}
 
-				}else {
+				} else {
 					System.out.print("■새로운 " + cols[Integer.parseInt(choice)] + "을(를) 입력하세요 : ");
 					sc = new Scanner(System.in);
 					String newData = sc.nextLine();
 					switch (Integer.parseInt(choice)) {
 					case 2:
 						// 닉네임 변경
-						if(Check.validateNickname(newData)) {
+						if (Check.validateNickname(newData)) {
 							if (udao.checkData(3, newData)) {
 								System.out.println("◎사용 가능한 닉네임입니다.");
-								System.out.println(user.user_nickname+" -> "+newData);
+								System.out.println(user.user_nickname + " -> " + newData);
 							} else {
 								System.out.println("※이미 사용 중인 닉네임입니다.");
 								continue;
 							}
-						}else {
+						} else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 영문자와 숫자, 한글만 사용하여 2자리~10자리로 입력해주세요!");
 							continue;
 						}
-						
+
 						break;
 					case 3:
 						if (Check.validatePhone(newData)) {
 							newData = Check.phoneOnlyNumber(newData);
-							System.out.println(Check.regPhone(user.user_phone)+" -> "+Check.regPhone(newData));
+							System.out.println(Check.regPhone(user.user_phone) + " -> " + Check.regPhone(newData));
 						} else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 							continue;
@@ -107,8 +111,8 @@ public class UpdateUserView {
 						break;
 					case 4:
 						if (newData.equalsIgnoreCase("M") || newData.equalsIgnoreCase("F")) {
-							System.out.println(user.user_gender+" -> "+newData);
-						}else {
+							System.out.println(user.user_gender + " -> " + newData);
+						} else {
 							System.out.println("※남성은 M, 여성은 F를 입력해주세요.");
 							continue;
 						}
@@ -116,16 +120,16 @@ public class UpdateUserView {
 					case 5:
 						// asdf1234@naver.com
 						if (Check.validateEmail(newData)) {
-							System.out.println(user.user_email+" -> "+newData);
-						}else {
+							System.out.println(user.user_email + " -> " + newData);
+						} else {
 							System.out.println("※올바른 이메일 형식이 아닙니다. 확인 후 다시 시도해주세요!");
 							continue;
 						}
 						break;
 					case 6:
-						if(Check.validateAddress(newData)) {
-							System.out.println(user.user_address+" -> "+newData);
-						}else {
+						if (Check.validateAddress(newData)) {
+							System.out.println(user.user_address + " -> " + newData);
+						} else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
 							continue;
 						}
@@ -155,10 +159,10 @@ public class UpdateUserView {
 						System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 					}
 				}
-			}else {
+			} else {
 				System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 			}
-			    
+
 		}
 
 	}

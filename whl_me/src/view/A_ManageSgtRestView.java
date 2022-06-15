@@ -30,15 +30,21 @@ public class A_ManageSgtRestView {
 							ur.reg_description);
 					System.out.println(result);
 				}
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-				System.out.print("■등록 번호를 선택하세요 : ");
+				System.out.println(
+						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.print("■등록 번호를 선택하세요(나가기는 '!') : ");
 				String register_num = sc.next();
-				if (Check.validateNumber(register_num)) {
+				if (register_num.equalsIgnoreCase("!")) {
+					System.out.println("💤추천 음식점 관리하기를 종료합니다.");
+					break;
+				} else if (Check.validateNumber(register_num)) {
 					UserRegisterDTO ur = urdao.a_select(Integer.parseInt(register_num));
 					if (ur != null) {
-						System.out.println("┏선택된 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+						System.out.println(
+								"┏선택된 추천 음식점\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 						System.out.println(ur);
-						System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+						System.out.println(
+								"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 						System.out.println("■메뉴를 선택하세요.");
 						System.out.println("1. 추천 음식점 수정 & 승인 / 2. 추천 음식점 반려 / 3. 뒤로가기");
 						String choice = sc.next();
@@ -50,22 +56,22 @@ public class A_ManageSgtRestView {
 								new A_InsertSgtView(register_num);
 							} else if (Integer.parseInt(choice) == 2) {
 								System.out.print("■의견(반려 사유)를 작성해주세요 : ");
-								sc=new Scanner(System.in);
+								sc = new Scanner(System.in);
 								String admin_comment = sc.nextLine();
-								System.out.println("※의견(반려 사유) : "+admin_comment);
+								System.out.println("※의견(반려 사유) : " + admin_comment);
 								System.out.print("■정말 반려하시겠습니까?(Y/N)");
 								String checkReject = sc.next();
-								if(checkReject.equalsIgnoreCase("Y")) {
-									if(urdao.update(7, admin_comment, Integer.parseInt(register_num))) {
+								if (checkReject.equalsIgnoreCase("Y")) {
+									if (urdao.update(7, admin_comment, Integer.parseInt(register_num))) {
 										System.out.println("◎추천 음식점 반려에 성공했습니다.");
 										break;
-									}else {
+									} else {
 										System.out.println("※추천 음식점 반려에 실패했습니다.");
 										break;
 									}
-								}else if(checkReject.equalsIgnoreCase("N")){
+								} else if (checkReject.equalsIgnoreCase("N")) {
 									System.out.println("💤추천 음식점 반려를 종료합니다.");
-								}else {
+								} else {
 									System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 								}
 							}

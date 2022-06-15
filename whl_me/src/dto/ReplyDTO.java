@@ -23,7 +23,7 @@ public class ReplyDTO {
 		result += "┃------------------------------------------------------------------------------------\n";
 		result += String.format("┃ %d. %s (예약 일자 : %s / 작성일자 : %s)\n", reply_num, restaurant_name, book_schedule,
 				reply_date);
-		result += String.format("┃ %s(⭐%d점)\n", reply_comment, reply_score);
+		result += String.format("┃ 📃내용 : %s(⭐%d점)\n", reply_comment, reply_score);
 		result += "┃------------------------------------------------------------------------------------";
 		return result;
 	}

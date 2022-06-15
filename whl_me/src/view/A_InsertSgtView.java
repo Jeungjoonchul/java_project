@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import dao.Check;
@@ -199,15 +200,16 @@ public class A_InsertSgtView {
 						case 5:
 							if (inputData.equals("8")) {
 								inputData = "휴무 없음";
-							} else if (Check.valiadateNumber_choiceMulti(inputData, 1, 7)) {
+							} else if (Check.validateNumber_choiceMulti(inputData, 1, 7)) {
 								String[] dow = { "", "월", "화", "수", "목", "금", "토", "일" };
-								String result = inputData;
+								String[] sort_inputData = inputData.split("");
+								Arrays.sort(sort_inputData);
 								inputData = "";
-								for (int j = 0; j < result.split("").length; j++) {
-									if (j == result.split("").length - 1) {
-										inputData += dow[Integer.parseInt(result.split("")[j])];
+								for (int j = 0; j < sort_inputData.length; j++) {
+									if (j == sort_inputData.length - 1) {
+										inputData += dow[Integer.parseInt(sort_inputData[j])];
 									} else {
-										inputData += dow[Integer.parseInt(result.split("")[j])] + ",";
+										inputData += dow[Integer.parseInt(sort_inputData[j])] + ",";
 									}
 								}
 							} else {

@@ -121,12 +121,12 @@ public class RestaurantDAO {
 			break;
 		case 2:
 			// 전화번호로 검색
-			sql += "where r.restaurant_phone like('%" + keyWord + "%') order by r.restaurant_phone " + sort
+			sql += "where r.restaurant_phone like('%" + keyWord + "%') order by r.restaurant_name " + sort
 					+ " limit ?";
 			break;
 		case 3:
 			// category 배열 0번에 ""값 추가로 choiceCate-1 => choiceCate로 변경
-			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_id " + sort + " limit ?";
+			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_name " + sort + " limit ?";
 			break;
 		}
 		try {

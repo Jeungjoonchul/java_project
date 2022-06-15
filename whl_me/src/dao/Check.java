@@ -255,7 +255,7 @@ public class Check {
 	 * 1 23	-> false(띄어쓰기 포함)<br>
 	 * 1238	-> false(8포함)<br> 
 	*/
-	public static boolean valiadateNumber_choiceMulti(String number, int firstNum, int lastNum) {
+	public static boolean validateNumber_choiceMulti(String number, int firstNum, int lastNum) {
 		boolean result = true;
 		if(validateNumber(number)) {
 			for (int i = 0; i < number.length(); i++) {
