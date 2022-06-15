@@ -26,7 +26,6 @@ public class A_SelectRestView {
 			System.out.println("===============");
 			System.out.println("■필터 선택");
 			System.out.println("1. 식당명 / 2. 전화번호 / 3. 카테고리  / 4. 뒤로가기");
-			System.out.println("choiceCate:"+choiceCate+"\nchoiceSort:"+choiceSort+"\nlimit:"+limit);
 			String inputNum = sc.next();
 			if(Check.validateNumber_choiceOne(inputNum, 1, 5)) {
 				choice=inputNum;
