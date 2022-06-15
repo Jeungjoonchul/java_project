@@ -6,18 +6,32 @@ import dao.Check;
 
 public class Test2 {
 	public static void main(String[] args) {
-		while(true) {
-			//입력 형식 확인
-			System.out.print("값 입력 : ");
-			String input = new Scanner(System.in).nextLine();
-			if(Check.validateAddress(input)) {
-				System.out.println("성공");
-				System.out.println(input);
-			}else {
-				System.out.println("실패");
-				System.out.println(input);
+		System.out.println("1. / 2. / 3. /");
+		Scanner sc = new Scanner(System.in);
+		String choice = sc.next();
+		if(Check.validateNumber_choiceOne(choice, 1, 3)) {
+			if(Integer.parseInt(choice)==3) {
+				//나가기
+			}
+			
+			else {
+				if(Integer.parseInt(choice)==1) {
+					//1번 작업공간
+					for (int i = 0; i < args.length; i++) {
+						
+					}
+				}
+				else if(Integer.parseInt(choice)==2) {
+					//2번 작업공간
+					switch(Integer.parseInt(choice)) {
+					
+					}
+				}
 			}
 		}
-			
+		
+		else {
+			//오입력
+		}
 	}
 }

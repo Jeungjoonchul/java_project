@@ -18,8 +18,8 @@ public class A_ResultSearchRestView {
 			System.out.println("┏검색 결과(" + resultList.size()
 					+ "개)\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 			for (RestaurantDTO r : resultList) {
-				String result = String.format("┃ %d. %s[%s, ♡%d / ☆%d(%d)]", r.restaurant_id, r.restaurant_name,
-						r.category_name, r.restaurant_like_cnt, r.avg_score, r.reply_cnt);
+				String result = String.format("┃ %d. %s[%s, ♡%d / ☆%d(%d)]", resultList.indexOf(r) + 1,
+						r.restaurant_name, r.category_name, r.restaurant_like_cnt, r.avg_score, r.reply_cnt);
 				System.out.println(result);
 			}
 			System.out
@@ -34,9 +34,11 @@ public class A_ResultSearchRestView {
 
 				else if (Integer.parseInt(choice) == 1) {
 					System.out.print("■음식점 선택 : ");
-					String restaurant_id = sc.next();
-					if (Check.validateNumber(restaurant_id)) {
-						if (rdao.select(Integer.parseInt(restaurant_id)) == null) {
+					choice = sc.next();
+
+					if (Check.validateNumber(choice)) {
+						int restaurant_id = resultList.get(Integer.parseInt(choice) - 1).restaurant_id;
+						if (rdao.select(restaurant_id) == null) {
 							System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 						} else {
 							new A_ReviseResView();

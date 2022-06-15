@@ -3,10 +3,12 @@ package view;
 import java.util.Scanner;
 
 import dao.Check;
+import dao.Session;
 
 public class UserBookView {
 	public UserBookView() {
 		while (true) {
+			Session.setData("selectedBook", null);
 			System.out.println("");
 			System.out.println("=============");
 			System.out.println("🍜내 예약 보기🍣");

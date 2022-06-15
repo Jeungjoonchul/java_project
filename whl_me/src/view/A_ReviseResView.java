@@ -27,13 +27,13 @@ public class A_ReviseResView {
 					System.out.println("💤현재 페이지를 종료합니다.");
 					break;
 				} else if (Integer.parseInt(choice) == 1) {// 1. 수정하기
-					new A_UpdateResView();
+					new A_UpdateRestView();
 					break;
 				} else if (Integer.parseInt(choice) == 2) {// 2. 삭제하기
 					System.out.println("■선택한 음식점을 정말로 삭제 하시겠습니까?(Y/N) ");
 					String checkDelete = sc.next();
 					if (checkDelete.equalsIgnoreCase("Y")) {
-						if (rdao.a_delete(result.restaurant_id)) {
+						if (rdao.delete(result.restaurant_id)) {
 							System.out.println("◎삭제가 완료되었습니다.");
 							Session.setData("selectedRest", null);
 							break;

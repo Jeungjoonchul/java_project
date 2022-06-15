@@ -15,105 +15,254 @@ import view.SgtRestView;
 
 public class Test {
 	public static void main(String[] args) {
-		int register_num = 3;
-		UserRegisterDAO urdao = new UserRegisterDAO();
-		RestaurantDAO rdao = new RestaurantDAO();
-		UserRegisterDTO urdto = new UserRegisterDTO();
-		urdto = urdao.a_select(register_num);
-
+		RestaurantDAO rtdao = new RestaurantDAO();
 		String[] datas = new String[7];
-		datas[0] = urdto.restaurant_name;
-		datas[1] = urdto.category_name;
-		datas[2] = urdto.restaurant_address;
-		datas[3] = urdto.restaurant_phone;
+		int register_id = 1;
+		datas[0] = rtdao.a_restSelect(register_id).restaurant_name;
+		datas[1] = rtdao.a_restSelect(register_id).category_name;
+		datas[2] = rtdao.a_restSelect(register_id).restaurant_address;
+		datas[3] = rtdao.a_restSelect(register_id).restaurant_phone;
+		datas[4] = Integer.toString(rtdao.a_restSelect(register_id).restaurant_capacity);
+		datas[5] = rtdao.a_restSelect(register_id).restaurant_close;
+		datas[6] = rtdao.a_restSelect(register_id).restaurant_description;
+		String[] inputInfo = { "음식점 이름", "카테고리", "음식점 주소", "음식점 전화번호", "예약 가능 인원", "음식점 휴무일", "음식점 설명" };
 		while (true) {
-			// 음식점 이름 : 파스타
-			// 음식점 카테고리 : 양식
-			// 음식점 주소 : 서울시 강남구
-			// 음식점 전화번호 : 전화번호
-			String rest_status = "";
-			rest_status += String.format("음식점 이름 : %s\n", datas[0]);
-			rest_status += String.format("카테고리 : %s\n", datas[1]);
-			rest_status += String.format("음식점 주소 : %s\n", datas[2]);
-			rest_status += String.format("음식점 전화번호 : %s\n", datas[3]);
-			System.out.println(rest_status);
-			// 1. 변경 없이 진행 / 2. 식당 이름 수정 / 3. 카테고리 수정 / 4. 주소 수정 / 5. 전화번호 수정 / 6. 전체 수정
-			// 번호를 입력하세요 : 2
-			// 새로운 값을 입력하세요 : 파스타1
-			String inputData = "";
-			String[] inputInfo = { "", "", "음식점 이름", "카테고리", "음식점 주소", "음식점 전화번호", "예약 가능 인원", "음식점 휴무", "음식점 설명" };
-			System.out.println(
-					"1. 전체 수정 / 2. 음식점 이름 수정 / 3. 카테고리 수정 / 4. 음식점 주소 수정 / 5. 음식점 전화번호 수정 / 6. 이대로 진행 / 7. 뒤로 가기");
+			
+			// 1. 음식점 수정하기
+			System.out.println("1. 전체 수정 / 2. 일부 수정 / 3. 나가기");
 			Scanner sc = new Scanner(System.in);
-			int choice = sc.nextInt();
-			if (choice == 7) {
-				System.out.println("종료 합니다.");
-				break;
-			} else if (choice == 1) {
-				for (int i = 2; i < inputInfo.length; i++) {
-					System.out.print(inputInfo[i] + "을(를) 입력하세요 : ");
-					sc = new Scanner(System.in);
-					inputData = sc.nextLine();
-					datas[i - 2] = inputData;
+			String choice2 = sc.nextLine();
+			if (Check.validateNumber_choiceOne(choice2, 1, 3)) {
+				// 전체 수정
+				if(Integer.parseInt(choice2)==3) {
+					
+				}else {
+					if(Integer.parseInt(choice2)==1) {
+						//전체 수정
+						//inputData => datas로 저장
+					}else if(Integer.parseInt(choice2)==2){
+						//일부 수정
+						//inputData => datas로 저장
+					}
+					//미리보기
+					//저장할래?
+					//ㅇㅋ->RestaurantDTO newRest = new RestaurantDTO(datas); -> 메소드 호출
 				}
-				continue;
-			} else if (2 <= choice && choice <= 5) {
-				System.out.print("새로운 " + inputInfo[choice] + "을(를) 입력하세요 : ");
-				sc = new Scanner(System.in);
-				inputData = sc.nextLine();
-				System.out.println(datas[choice - 2] + " -> " + inputData);
-				if (choice == 5) {
-					datas[choice - 2] = Check.phoneOnlyNumber(inputData);
-				}
-				datas[choice - 2] = inputData;
-//				switch (choice) {
-//				case 2:
-//					System.out.println(urdto.restaurant_name + " -> " + inputData);
-//					urdto.restaurant_name = inputData;
-//					break;
-//				case 3:
-//					System.out.println(urdto.category_name + " -> " + inputData);
-//					urdto.category_name = inputData;
-//					break;
-//				case 4:
-//					System.out.println(urdto.restaurant_address + " -> " + inputData);
-//					urdto.restaurant_address = inputData;
-//					break;
-//				case 5:
-//					System.out.println(urdto.restaurant_phone + " -> " + inputData);
-//					urdto.restaurant_phone = inputData;
-//					break;
-//				}
-				continue;
-			} else if (choice == 6) {
-				for (int i = 6; i < inputInfo.length; i++) {
-					System.out.print(inputInfo[i] + "을(를) 입력하세요 : ");
-					sc = new Scanner(System.in);
-					inputData = sc.nextLine();
-					datas[i - 2] = inputData;
-				}
-				RestaurantDTO result = new RestaurantDTO(datas);
-				System.out.println(result);
-				System.out.println("정말 이대로 등록 하실래요?(Y/N)");
-				String checkInsert = sc.next();
-				if (checkInsert.equalsIgnoreCase("Y")) {
-//					if (urdao.insert(result, 6, "Y", register_num)) {
-//
-//						System.out.println("등록 성공");
-//						break;
-//
-//					} else {
-//						System.out.println("음식점 등록 실패 ");
-//						break;
-//					}
-				} else if (checkInsert.equalsIgnoreCase("N")) {
-					System.out.println("추천 음식점 등록을 취소합니다.");
+				if (Integer.parseInt(choice2) == 1) {
+					for (int i = 0; i < inputInfo.length - 3;) {
+						if (i == 1) {
+							System.out.println("■카테고리를 선택해주세요.");
+							System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
+							System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
+						} else {
+							System.out.print("■" + inputInfo[i] + " 뒤로가기는 '!') : ");
+						}
+						sc = new Scanner(System.in);
+						String inputData = sc.nextLine();
+						if (inputData.equals("!")) {
+							System.out.println("💤추천 음식점 전체 수정을 종료합니다.");
+							break;
+						} else {
+							switch (i) {
+							case 0:
+								// 음식점 이름
+								if (Check.validateRestName(inputData)) {
+								} else {
+									System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+									System.out.println("(특수문자는 입력할 수 없으며, 20자리까지 입력 가능합니다.)");
+									continue;
+								}
+								break;
+							case 1:
+								// 음식점 카테고리
+								if (Check.validateNumber_choiceOne(inputData, 1, 6)) {
+									String[] category = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
+									inputData = category[Integer.parseInt(inputData)];
+								} else {
+									System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+									continue;
+								}
+								break;
+							case 2:
+								// 음식점 주소
+								if (Check.validateAddress(inputData)) {
+								} else {
+									System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+									System.out.println("(특수문자는 입력할 수 없으며, 100자리까지 입력 가능합니다.)");
+									continue;
+								}
+								break;
+							case 3:
+								if (Check.validatePhone(inputData)) {
+									inputData = Check.regPhone(inputData);
+								} else {
+									System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+									continue;
+								}
+								break;
+							}
+							while (true) {
+								System.out.print("■입력하시려는 내용이 \"" + inputData + "\"이(가) 맞나요?(Y/N) : ");
+								String checkInput = sc.next();
+								if (checkInput.equalsIgnoreCase("Y")) {
+									if (i == 3) {
+										inputData = Check.phoneOnlyNumber(inputData);
+									}
+									datas[i] = inputData;
+									i++;
+									break;
+								} else if (checkInput.equalsIgnoreCase("N")) {
+									break;
+								} else {
+									System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
+								}
+							}
+						}
+					}
+				} else if (Integer.parseInt(choice2) == 2) {
+					// 일부 수정
+					System.out.println("■수정할 내용을 입력하세요.");
+					System.out.println(
+							"1. 식당 이름 / 2. 카테고리 / 3. 식당 주소 / 4. 식당 전화번호  / 5. 예약 가능 인원 / 6. 식당 휴무일 / 7. 식당 설명");
+					choice2 = sc.next();
+					if (Check.validateNumber_choiceOne(choice2, 1, 7)) {
+						if (Integer.parseInt(choice2) == 2) {
+							System.out.println("■카테고리를 선택해주세요.");
+							System.out.println("1. 한식🍲\t2. 중식🍜\t3. 일식🍣\t4. 양식🍕");
+							System.out.println("5. 패스트푸드🌭\t6. 카페/디저트☕");
+						} else {
+							System.out.print("■새로운 " + inputInfo[Integer.parseInt(choice2) - 1] + "을(를) 입력해주세요 : ");
+						}
+						sc = new Scanner(System.in);
+						String inputData = sc.nextLine();
+						switch (Integer.parseInt(choice2)) {
+						case 1:
+							// 식당 이름
+							System.out.println("■새로운 식당 이름을 써주세요.");
+							if (Check.validateRestName(inputData)) {
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								System.out.println("(특수문자는 입력할 수 없으며, 20자리까지 입력 가능합니다.)");
+								continue;
+							}
+							break;
+						case 2:
+							// 음식점 카테고리
+							if (Check.validateNumber_choiceOne(inputData, 1, 6)) {
+								String[] category = { "", "한식", "중식", "일식", "양식", "패스트푸드", "카페/디저트" };
+								inputData = category[Integer.parseInt(inputData)];
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								continue;
+							}
+							break;
+						case 3:
+							// 식당 주소
+							System.out.println("■새로운 식당 주소를 써주세요.");
+							if (Check.validateAddress(inputData)) {
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								System.out.println("(특수문자는 입력할 수 없으며, 100자리까지 입력 가능합니다.)");
+								continue;
+							}
+							break;
+						case 4:
+							// 식당 전화번호
+							System.out.println("■새로운 식당 전화번호를 써주세요");
+							if (Check.validatePhone(inputData)) {
+								inputData = Check.regPhone(inputData);
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								continue;
+							}
+							break;
+						case 5:
+							// 식당 예약 가능 인원
+							System.out.println("■식당 예약 가능인원을 써주세요.");
+							if (Check.validateNumber(inputData)) {
+								inputData = inputData + "명";
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								continue;
+							}
+							break;
+						case 6:
+							// 식당 휴무일
+							System.out.println("■휴무일에 해당하는 숫자를 띄어쓰기 없이 선택해주세요.(ex : 토,일 -> '67'입력)");
+							System.out.println("1. 월 / 2. 화 / 3. 수 / 4. 목 / 5. 금 / 6. 토 / 7. 일 / 8. 휴무없음 ");
+							if (inputData.equals("8")) {
+								inputData = "휴무없음";
+							} else if (Check.validateNumber_choiceMulti(inputData, 1, 7)) {
+								String[] dow = { "", "월", "화", "수", "목", "금", "토", "일" };
+								String result = inputData;
+								inputData = "";
+								for (int j = 0; j < result.split("").length; j++) {
+									if (j == result.split("").length - 1) {
+										inputData += dow[Integer.parseInt(result.split("")[j])];
+									} else {
+										inputData += dow[Integer.parseInt(result.split("")[j])] + ",";
+									}
+								}
+							} else {
+								System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!");
+								continue;
+							}
+							break;
+						case 7:
+							// 식당 설명
+							System.out.println("■간단한 식당 설명을 써주세요.");
+							inputData = inputData;
+							break;
+						}
+						System.out.print("■입력하시려는 내용이 \"" + inputData + "\"이(가) 맞나요?(Y/N) : ");
+						String checkInput = sc.next();
+						if (checkInput.equalsIgnoreCase("Y")) {
+							if (Integer.parseInt(choice2) == 4) {
+								inputData = Check.phoneOnlyNumber(inputData);
+							}
+							//db에서 a_restSelect메소드로 정보 받아와서 datas에 알맞은 곳에 저장
+							//inputDatas로 수정값 입력 받음
+							//변경 이후의 새로운 값인 inputDatas를 datas배열에 알맞은 방에 저장
+							//datas를 이용하여 new RestaurantDTO 생성 후 newRest에 저장
+							datas[Integer.parseInt(choice2) - 1] = inputData;
+							
+						} else if (checkInput.equalsIgnoreCase("N")) {
+							break;
+						} else {
+							System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
+						}
+					} else {
+						System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
+						continue;
+					}
+					RestaurantDTO newRest = new RestaurantDTO(datas);
+					System.out.println("┏입력한 음식점 정보\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+					System.out.println(newRest);
+					System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+					System.out.print("정말 등록하시겠습니까?(Y/N) : ");
+					String checkInsert = sc.next();
+					if (checkInsert.equalsIgnoreCase("Y")) {
+						RestaurantDAO rdao = new RestaurantDAO();
+						if (rdao.update(newRest, register_id/* Integer.parseInt(register_id) */)) {
+							System.out.println("등록 성공");
+							break;
+						} else {
+							System.out.println("등록 실패");
+							break;
+						}
+					} else if (checkInsert.equalsIgnoreCase("N")) {
+						break;
+					} else {
+						System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
+					}
+					// 나가기
+					System.out.println("나가기를 누르셨습니다");
 					break;
 				} else {
-					System.out.println("잘못 입력");
+					System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 				}
-			} else {
-				System.out.println("잘못입력");
+			}else {
+				System.out.println("※잘못 입력하였습니다. 확인 후 다시 시도해주세요!");
 			}
 		}
 	}

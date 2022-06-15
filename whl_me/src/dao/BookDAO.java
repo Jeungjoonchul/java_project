@@ -26,10 +26,10 @@ public class BookDAO {
 
 	/**
 	 * book 테이블에 새로운 데이터(음식점 예약)를 추가하는 메소드<br>
+	 * 
 	 * @param newBook 예약정보를 포함하는 BookDTO 타입의 객체
-	 * @return
-	 * book 테이블에 새로운 데이터 추가 성공 시 true<br>
-	 * book 테이블에 새로운 데이터 추가 실패 시 false<br>
+	 * @return book 테이블에 새로운 데이터 추가 성공 시 true<br>
+	 *         book 테이블에 새로운 데이터 추가 실패 시 false<br>
 	 */
 	public boolean insert(BookDTO newBook) {
 		String sql = "insert into book(book_schedule,book_companion_number,user_id,restaurant_id) values(?,?,?,?)";
@@ -49,14 +49,14 @@ public class BookDAO {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * user가 저장한 book(예약) 테이블에 데이터 리스트 검색<br>
+	 * 
 	 * @param moment 검색하고자 하는 예약 설정(과거 예약-> "past" / 현재(미래) 예약 ->"current")
-	 * @return
-	 * 과거 또는 현재(미래)의 book 데이터들을 BooKDTO 타입의 객체들로 포장 후 ArrayList에 담아 반환<br>
+	 * @return 과거 또는 현재(미래)의 book 데이터들을 BooKDTO 타입의 객체들로 포장 후 ArrayList에 담아 반환<br>
 	 */
-	//메소드명 변경 searchList => getBookList => getList
+	// 메소드명 변경 searchList => getBookList => getList
 	public ArrayList<BookDTO> getList(String moment) {
 		ArrayList<BookDTO> result = new ArrayList<BookDTO>();
 		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule,  b.user_id, b.restaurant_id, b.has_reply from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where user_id = ?";
@@ -89,7 +89,7 @@ public class BookDAO {
 				Calendar now = Calendar.getInstance();
 				Calendar schedule = Calendar.getInstance();
 				schedule.set(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
-				
+
 				if (moment.equalsIgnoreCase("current")) {
 					if (schedule.after(now)) {
 						BookDTO bl = new BookDTO();
@@ -103,7 +103,7 @@ public class BookDAO {
 						bl.has_reply = rs.getString("has_reply");
 						result.add(bl);
 					}
-					
+
 				} else if (moment.equalsIgnoreCase("past")) {
 					if (schedule.before(now)) {
 						BookDTO bl = new BookDTO();
@@ -124,17 +124,16 @@ public class BookDAO {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * user가 저장한 book(예약) 중 하나를 선택<br>
 	 * 선택된 예약을 한 음식점 정보를 "selectedBook"의 key로 {@link dao.Session}에 저장<br>
+	 * 
 	 * @param book_num 예약 번호
-	 * @return
-	 * 음식점 이름을 포함한 book 데이터를 BookDTO로 포장하여 반환<br>
+	 * @return 음식점 이름을 포함한 book 데이터를 BookDTO로 포장하여 반환<br>
 	 */
-	//메소드명 변경 selectBookedRest => select
 	public BookDTO select(int book_num) {
-		BookDTO result = new BookDTO();
+
 		String sql = "select b.book_num, r.restaurant_name, b.book_companion_number, b.book_date, b.book_schedule, b.user_id, b.restaurant_id, b.has_reply from book as b join restaurant as r on b.restaurant_id=r.restaurant_id where book_num=? and user_id=?";
 		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
 
@@ -144,39 +143,40 @@ public class BookDAO {
 			ps.setString(2, user_id);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				
-				result.book_num=rs.getInt("book_num");//0
-				result.book_date=rs.getString("book_date");//0
-				result.book_schedule=rs.getString("book_schedule");//0
-				result.book_companion_number=rs.getInt("book_companion_number");//0
-				result.has_reply=rs.getString("has_reply");//0
-				result.user_id=rs.getString("user_id");//0
-				result.restaurant_id=rs.getInt("restaurant_id");//0
-				result.restaurant_name=rs.getString("restaurant_name");
+				BookDTO result = new BookDTO();
+				result.book_num = rs.getInt("book_num");
+				result.book_date = rs.getString("book_date");
+				result.book_schedule = rs.getString("book_schedule");
+				result.book_companion_number = rs.getInt("book_companion_number");
+				result.has_reply = rs.getString("has_reply");
+				result.user_id = rs.getString("user_id");
+				result.restaurant_id = rs.getInt("restaurant_id");
+				result.restaurant_name = rs.getString("restaurant_name");
 				RestaurantDAO rdao = new RestaurantDAO();
-				if(rdao.select(result.restaurant_id)!=null) {
+				if (rdao.select(result.restaurant_id) != null) {
 					Session.setData("selectedBook", result);
 					return result;
-				}else {
+				} else {
 					return null;
 				}
 			}
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+		}
 
-		return result;
+		return null;
 	}
 
 	/**
 	 * 선택한 book(예약) 데이터 삭제<br>
+	 * 
 	 * @param book_num 예약 번호
-	 * @return
-	 * book 테이블에 데이터 삭제 성공 시 true<br>
-	 * book 테이블에 데이터 삭제 실패 시 false<br>
+	 * @return book 테이블에 데이터 삭제 성공 시 true<br>
+	 *         book 테이블에 데이터 삭제 실패 시 false<br>
 	 */
 	public boolean delete(int book_num) {
 		String sql = "delete from book where book_num = ? and user_id = ?";
 //		String user_id = ((U serDTO)Session.getData("loginUser")).user_id;
-		String user_id = ((UserDTO)Session.getData("loginUser")).user_id;
+		String user_id = ((UserDTO) Session.getData("loginUser")).user_id;
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, book_num);
@@ -193,11 +193,10 @@ public class BookDAO {
 	 * has_reply는 해당 예약에 대해 리뷰 작성 시 'N'에서 'Y'로 수정<br>
 	 * 
 	 * @param book_num 예약 번호
-	 * @param choice 바꾸고자 하는 데이터의 번호(1. 예약 인원 / 2. 예약 날짜 / 3. 리뷰 작성 여부)
-	 * @param newData 새로운 데이터의 값
-	 * @return
-	 * 데이터 변경 성공 시 true<br>
-	 * 데이터 변경 실패 시 false<br>
+	 * @param choice   바꾸고자 하는 데이터의 번호(1. 예약 인원 / 2. 예약 날짜 / 3. 리뷰 작성 여부)
+	 * @param newData  새로운 데이터의 값
+	 * @return 데이터 변경 성공 시 true<br>
+	 *         데이터 변경 실패 시 false<br>
 	 */
 	public boolean update(int book_num, int choice, String newData) {
 		String[] cols = { "", "book_companion_number", "book_schedule", "has_reply" };
@@ -222,10 +221,10 @@ public class BookDAO {
 	/**
 	 * 현재 시점으로부터 과거의 예약 중 리뷰 작성 가능한 예약을 찾는 메소드<br>
 	 * has_reply가 'N'인 예약만 ArrayList에 담아 반환<br>
-	 * 같은 클래스에 있는 getList 메소드를 이용하여 과거의 예약 리스트를 뽑고 
-	 * ArrayList에 있는 BookDTO 객체의 has_reply가 'N'인 BookDTO 객체만 다시 ArrayList에 담아 반환<br>
-	 * @return
-	 * has_reply가 'N'인 데이터들을 ArrayList에 담아 반환<br>
+	 * 같은 클래스에 있는 getList 메소드를 이용하여 과거의 예약 리스트를 뽑고 ArrayList에 있는 BookDTO 객체의
+	 * has_reply가 'N'인 BookDTO 객체만 다시 ArrayList에 담아 반환<br>
+	 * 
+	 * @return has_reply가 'N'인 데이터들을 ArrayList에 담아 반환<br>
 	 */
 	public ArrayList<BookDTO> notHasReplyBook() {
 		ArrayList<BookDTO> pastBookList = this.getList("past");
@@ -237,7 +236,5 @@ public class BookDAO {
 		}
 		return result;
 	}
-
-
 
 }

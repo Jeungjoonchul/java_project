@@ -5,6 +5,7 @@ import java.util.Scanner;
 import dao.BookDAO;
 import dao.Check;
 import dao.ReplyDAO;
+import dto.BookDTO;
 import dto.ReplyDTO;
 
 public class InsertReplyView {
@@ -17,7 +18,9 @@ public class InsertReplyView {
 			Scanner sc = new Scanner(System.in);
 			if (i == 3) {
 				System.out.println("┏리뷰 미리보기\t━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println(newReply);
+				String result = "";
+				result += String.format("┃ %s (예약 일자 : %s)\n", newReply.restaurant_name, newReply.book_schedule);
+				result += String.format("┃ 📃내용 : %s(⭐%d점)", newReply.reply_comment, newReply.reply_score);
 				System.out.println(
 						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 				System.out.print("■작성한 리뷰를 등록하시겠습니까?(Y/N) : ");
@@ -49,10 +52,13 @@ public class InsertReplyView {
 					case 0:
 						// 리뷰 작성할 예약 번호 선택
 						if (Check.validateNumber(inputData)) {
-							if (bdao.select(Integer.parseInt(inputData)) != null) {
-								newReply.book_num = bdao.select(Integer.parseInt(inputData)).book_num;
-								newReply.restaurant_id = bdao.select(Integer.parseInt(inputData)).restaurant_id;
-								newReply.user_id = bdao.select(Integer.parseInt(inputData)).user_id;
+							BookDTO sb = bdao.select(Integer.parseInt(inputData));
+							if (sb != null) {
+								newReply.book_num = sb.book_num;
+								newReply.restaurant_id = sb.restaurant_id;
+								newReply.user_id = sb.user_id;
+								newReply.book_schedule = sb.book_schedule;
+								newReply.restaurant_name = sb.restaurant_name;
 								i++;
 							} else {
 								System.out.println("※예약 번호를 찾을 수 없습니다. 확인 후 다시 시도해주세요!");

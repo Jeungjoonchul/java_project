@@ -15,8 +15,8 @@ public class AvailableReplyView {
 		while (true) {
 			ReplyDAO rpdao = new ReplyDAO();
 			BookDAO bdao = new BookDAO();
-			ArrayList<BookDTO> url = new ArrayList<BookDTO>();
-			url = bdao.notHasReplyBook();
+			ArrayList<BookDTO> url = bdao.notHasReplyBook();
+
 			if (url.size() == 0) {
 				System.out.println("");
 				System.out.println("※현재 작성 가능한 리뷰가 없습니다.");

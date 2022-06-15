@@ -9,6 +9,13 @@ import java.util.HashMap;
  * "restList"		필터를 이용하여 음식점 리스트 검색 후 리스트 저장(ArrayList<RestaurantDTO>)<br>
  * "selectedrest"	음식점 리스트 중 선택된 1개의 음식점 정보 저장(RestaurantDTO)<br>
  * "selectedBook"	예약 리스트 중 선택된 1개의 예약 정보 저장(BookDTO)<br>
+ * <br>
+ * admin모드에서 음식점 수정 후 restList를 최신화 하기 위해 저장<br>
+ * "choice", "choiceCate", "choiceSort", "limit", "keyword"<br>
+ * 		
+ * 
+ * 
+ * 
  * @author Joonchul Jeung
  *
  */

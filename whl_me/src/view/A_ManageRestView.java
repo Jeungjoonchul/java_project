@@ -29,7 +29,7 @@ public class A_ManageRestView {
 						break;
 					case 2:
 						//음식점 보기(수정/삭제)
-						new A_SelectRestView();
+						new A_SearchRestView();
 						break;
 					}
 				}

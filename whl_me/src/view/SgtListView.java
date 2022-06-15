@@ -35,7 +35,7 @@ public class SgtListView {
 						}
 						isCheckY += String.format("┃ 등록 여부 : %s / 의견 : %s", ur.is_register, ur.admin_comment);
 					} else if (ur.is_register.equalsIgnoreCase("N")) {
-						isCheckN += String.format("┃ 📃등록 번호 : %d / %s(%s)", ur.register_num, ur.restaurant_name,
+						isCheckN += String.format("┃ 📃등록 번호 : %d / %s(%s)\n", ur.register_num, ur.restaurant_name,
 								ur.category_name);
 					}
 				}
@@ -50,7 +50,7 @@ public class SgtListView {
 				if (isCheckN.equalsIgnoreCase("")) {
 					System.out.println("┃ 💥등록 대기 중인 추천 음식점이 없습니다.");
 				} else {
-					System.out.println(isCheckN);
+					System.out.print(isCheckN);
 				}
 				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 			}

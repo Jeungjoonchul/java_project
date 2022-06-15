@@ -58,7 +58,8 @@ public class RestaurantDAO {
 			break;
 		case 4:
 			// category 배열 0번에 ""값 추가로 choiceCate-1 => choiceCate로 변경
-			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_name " + sort + " limit ?";
+			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_name " + sort
+					+ " limit ?";
 			break;
 		}
 		try {
@@ -121,12 +122,12 @@ public class RestaurantDAO {
 			break;
 		case 2:
 			// 전화번호로 검색
-			sql += "where r.restaurant_phone like('%" + keyWord + "%') order by r.restaurant_name " + sort
-					+ " limit ?";
+			sql += "where r.restaurant_phone like('%" + keyWord + "%') order by r.restaurant_name " + sort + " limit ?";
 			break;
 		case 3:
 			// category 배열 0번에 ""값 추가로 choiceCate-1 => choiceCate로 변경
-			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_name " + sort + " limit ?";
+			sql += "where r.category_name='" + category[choiceCate] + "' order by r.restaurant_name " + sort
+					+ " limit ?";
 			break;
 		}
 		try {
@@ -217,7 +218,8 @@ public class RestaurantDAO {
 	 * 
 	 * @param newRest      user_register 테이블의 데이터를 RestaurantDTO 타입의 객체로 포장한 것
 	 * @param register_num user_register 테이블의 is_register 값을 수정하기 위해 필요함
-	 * @return restaurant 테이블에 새로운 데이터 추가 및 is_register 값 'Y'로 변경, admin_comment 추가<br>
+	 * @return restaurant 테이블에 새로운 데이터 추가 및 is_register 값 'Y'로 변경, admin_comment
+	 *         추가<br>
 	 */
 	// user_register에 있는 데이터 중 is_register가 'N'인 것과 is_comment가 null인 데이터는 유저가 추천한
 	// 음식점 중에서 관리자 확인이 진행되지 않은 데이터
@@ -334,41 +336,110 @@ public class RestaurantDAO {
 		}
 		return false;
 	}
-	
-	
-	public boolean a_delete(int restaurant_id) {
+
+	/**
+	 * admin모드에서 선택한 음식점을 삭제하는 메소드<br>
+	 * @param restaurant_id 삭제하고자 하는 음식점의 id
+	 * @return 
+	 * 음식점 삭제 성공 시 true<br>
+	 * 음식점 삭제 실패 시 false<br>
+	 */
+	public boolean delete(int restaurant_id) {
 		String sql = "delete from restaurant where restaurant_id = ?";
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, restaurant_id);
-			return ps.executeUpdate()==1;
-		} catch (SQLException e) {}
+			return ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+		}
 		return false;
 	}
-	
-	public boolean a_update(int choiceCol, String newData,int restaurant_id) {
-		//1. 음식점 이름/2. 카테고리/3.주소 /4. 전화번호 /5. 예약가능 인원/6.휴무일/7.음식점 설명
-		
-		String[] cols= {"", "restaurant_name", "category_name","restaurant_address", "restaurant_phone","resturant_capacity","restaurant_close","restaurant_description"};
-		String sql = "update restaurant set "+cols[choiceCol]+" = ? where restaurant_id= ?";
+
+	/**
+	 * admin모드에서 음식점의 정보를 수정하는 메소드<br>
+	 * 수정 후 {@link dao.Session}에 저장된 "selectedRest"와 "restList"도 변경된 내용으로 업데이트가 필요하여 재설정<br>
+	 * @param choiceCol     변경하고자 하는 음식점의 정보에 해당하는 숫자(1.이름 / 2.카테고리 / 3.주소 / 4. 전화번호
+	 *                      / 5. 예약가능인원 / 6.휴무일 / 7. 설명
+	 * @param newData       변경하고자 하는 새로운 값
+	 * @param restaurant_id 변경하고자 하는 음식점 번호
+	 * @return 
+	 * 수정 성공 시 true<br>
+	 * 수정 실패 시 false<br>
+	 */
+	public boolean update(int choiceCol, String newData, int restaurant_id) {
+		// 1. 음식점 이름/2. 카테고리/3.주소 /4. 전화번호 /5. 예약가능 인원/6.휴무일/7.음식점 설명
+
+		String[] cols = { "", "restaurant_name", "category_name", "restaurant_address", "restaurant_phone",
+				"resturant_capacity", "restaurant_close", "restaurant_description" };
+		String sql = "update restaurant set " + cols[choiceCol] + " = ? where restaurant_id= ?";
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, newData);
 			ps.setInt(2, restaurant_id);
-			ps.executeUpdate();
-			ArrayList<RestaurantDTO> rl = new ArrayList<RestaurantDTO>();
-			int choice=(int) Session.getData("choice");
-			int choiceCate=(int) Session.getData("choiceCate");
-			int choiceSort=(int) Session.getData("choiceSort");
-			int limit=(int) Session.getData("limit");
-			
-			rl=this.getList(choice, choiceCate, choiceSort, limit);
-			Session.setData("restList", rl);
-			
-			return rl.size()!=0;
+			if(ps.executeUpdate()==1) {
+				if(this.select(restaurant_id)!=null) {
+					int choice = (Integer)Session.getData("choice");
+					int choiceCate=(Integer)Session.getData("choiceCate");
+					int choiceSort=(Integer)Session.getData("choiceSort");
+					int limit=(Integer)Session.getData("limit");
+					String keyWord=(String)Session.getData("keyWord");
+					return this.getList(choice, choiceCate, choiceSort, limit, keyWord).size()>0;
+				}
+				
+			}
+		} catch (SQLException e) {}
+		return false;
+	}
+
+	public boolean update(RestaurantDTO newRest, int restaurant_id) {
+		String sql = "update restaurant set restaurant_name = ?,\r\n" + "                        category_name = ?,\r\n"
+				+ "                        restaurant_address = ?,\r\n"
+				+ "                        restaurant_phone = ?,\r\n"
+				+ "                        restaurant_capacity = ?,\r\n"
+				+ "                        restaurant_close = ?,\r\n"
+				+ "                        restaurant_description = ? where restaurant_id = ?;";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newRest.restaurant_name);
+			ps.setString(2, newRest.category_name);
+			ps.setString(3, newRest.restaurant_address);
+			ps.setString(4, newRest.restaurant_phone);
+			ps.setInt(5, newRest.restaurant_capacity);
+			ps.setString(6, newRest.restaurant_close);
+			ps.setString(7, newRest.restaurant_description);
+			ps.setInt(8, restaurant_id);
+
+			if (ps.executeUpdate() == 1) {
+				Session.setData("selectedRest", newRest);
+				return true;
+			}
 		} catch (SQLException e) {
-		System.out.println(e);
 		}
 		return false;
+	}
+	
+	public RestaurantDTO a_restSelect(int restaurant_id) {
+		RestaurantDTO rtdto = new RestaurantDTO();
+		String sql = "select * from restaurant r left join(select avg(reply_score) as avg_score, count(reply_num) as reply_cnt,restaurant_id from reply group by restaurant_id) as rs on r.restaurant_id=rs.restaurant_id where r.restaurant_id = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, restaurant_id);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				rtdto.restaurant_id = rs.getInt("restaurant_id");
+				rtdto.restaurant_name = rs.getString("restaurant_name");
+				rtdto.category_name = rs.getString("category_name");
+				rtdto.restaurant_address = rs.getString("restaurant_address");
+				rtdto.restaurant_phone = rs.getString("restaurant_phone");
+				rtdto.restaurant_capacity = (rs.getInt("restaurant_capacity"));
+				rtdto.restaurant_close = rs.getString("restaurant_close");
+				rtdto.restaurant_description = rs.getString("restaurant_description");
+//				rtdto.restaurant_like_cnt = rs.getInt("restaurant_like_cnt");
+//				rtdto.avg_score = rs.getInt("avg_score");
+//				rtdto.reply_cnt = rs.getInt("reply_cnt");
+				return rtdto;
+			}
+		} catch (SQLException e) {}
+		return null;
 	}
 }

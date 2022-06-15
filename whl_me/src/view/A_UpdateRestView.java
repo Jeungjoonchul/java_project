@@ -1,7 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -10,9 +8,9 @@ import dao.RestaurantDAO;
 import dao.Session;
 import dto.RestaurantDTO;
 
-public class A_UpdateResView {
+public class A_UpdateRestView {
 
-	public A_UpdateResView() {
+	public A_UpdateRestView() {
 		int weekcnt = 0;
 		String yn = "";
 		String[] weekend = { "월", "화", "수", "목", "금", "토", "일" };
@@ -46,10 +44,10 @@ public class A_UpdateResView {
 					check = sc.next();
 					if (check.equalsIgnoreCase("Y")) {
 
-						if (rdao.a_update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
 							System.out.println("◎변경 완료 되었습니다.");
 							result.restaurant_name = updatedata;
-							Session.setData("selectedRest", result);
+							
 						} else {
 							System.out.println("※변경 실패");
 						}
@@ -78,10 +76,10 @@ public class A_UpdateResView {
 					if (check.equalsIgnoreCase("Y")) {
 						to = Integer.parseInt(updatedata);
 
-						if (rdao.a_update(Integer.parseInt(choice), category[to], result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), category[to], result.restaurant_id)) {
 							System.out.println("◎변경완료 되었습니다.");
 							result.category_name = updatedata;
-							Session.setData("selectedRest", result);
+							
 						} else {
 							System.out.println("※변경 실패");
 						}
@@ -101,10 +99,10 @@ public class A_UpdateResView {
 					System.out.println("■입력한 정보가 :" + updatedata + "가 맞으신가요?(Y입력시 변경됩니다.)");
 					check = sc.next();
 					if (check.equalsIgnoreCase("Y")) {
-						if (rdao.a_update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
 							System.out.println("◎변경완료 되었습니다.");
 							result.restaurant_address = updatedata;
-							Session.setData("selectedRest", result);
+							
 						} else {
 							System.out.println("※변경 실패");
 						}
@@ -128,10 +126,10 @@ public class A_UpdateResView {
 					System.out.println("■입력한 정보가 :" + updatedata + "가 맞으신가요?(Y입력시 변경됩니다.)");
 					check = sc.next();
 					if (check.equalsIgnoreCase("Y")) {
-						if (rdao.a_update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
 							System.out.println("◎변경완료 되었습니다.");
 							result.restaurant_phone = updatedata;
-							Session.setData("selectedRest", result);
+							
 						} else {
 							System.out.println("※변경 실패");
 						}
@@ -151,10 +149,10 @@ public class A_UpdateResView {
 					System.out.println("■입력한 정보가 :" + updatedata + "가 맞으신가요?(Y입력시 변경됩니다.)");
 					check = sc.next();
 					if (check.equalsIgnoreCase("Y")) {
-						if (rdao.a_update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
 							System.out.println("◎변경완료 되었습니다.");
 							result.restaurant_capacity = Integer.parseInt(updatedata);
-							Session.setData("selectedRest", result);
+						
 						} else {
 							System.out.println("※변경 실패");
 						}
@@ -218,10 +216,10 @@ public class A_UpdateResView {
 									System.out.println("■입력한 정보가 :" + close + "가 맞으신가요?(Y입력시 변경됩니다.)");
 									check = sc.next();
 									if (check.equalsIgnoreCase("Y")) {
-										if (rdao.a_update(Integer.parseInt(choice), close, result.restaurant_id)) {
+										if (rdao.update(Integer.parseInt(choice), close, result.restaurant_id)) {
 											System.out.println("◎변경완료 되었습니다.");
 											result.restaurant_close = updatedata;
-											Session.setData("selectedRest", result);
+										
 											break;
 										} else {
 											System.out.println("※변경 실패");
@@ -258,10 +256,10 @@ public class A_UpdateResView {
 					System.out.println("■입력한 정보가 :" + updatedata + "가 맞으신가요?(Y입력시 변경됩니다.)");
 					check = sc.next();
 					if (check.equalsIgnoreCase("Y")) {
-						if (rdao.a_update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
+						if (rdao.update(Integer.parseInt(choice), updatedata, result.restaurant_id)) {
 							System.out.println("◎변경완료 되었습니다.");
 							result.restaurant_name = updatedata;
-							Session.setData("selectedRest", result);
+							
 						} else {
 							System.out.println("※변경 실패");
 						}

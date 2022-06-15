@@ -8,8 +8,8 @@ import dao.RestaurantDAO;
 import dao.Session;
 import dto.RestaurantDTO;
 
-public class A_SelectRestView {
-	public A_SelectRestView() {
+public class A_SearchRestView {
+	public A_SearchRestView() {
 		while (true) {
 			Session.setData("restList", null); // 필터를 이용하여 조회한 리스트 세션에 저장하기 위해 초기화
 			Session.setData("selectedRest", null);// 필터를 이용하여 조회한 리스트 중 선택한 음식점 저장하기 위해 초기화
@@ -19,7 +19,7 @@ public class A_SelectRestView {
 			String choiceCate = "1"; 
 			String choiceSort = ""; 
 			String limit = ""; 
-			String keyword="";
+			String keyWord="";
 			System.out.println("");
 			System.out.println("==================");
 			System.out.println("(관리자)🍜음식점 보기🍣");
@@ -48,19 +48,18 @@ public class A_SelectRestView {
 					}
 				}else {
 					System.out.print("■키워드를 입력하세요 : ");
-					inputData = sc.next();
+					keyWord = sc.next();
 					if(Integer.parseInt(inputData)==1) {
-						if(Check.validateRestName(inputData)) {
-							keyword = inputData;
+						if(Check.validateRestName(keyWord)) {
 						}else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 확인 후 다시 시도해주세요!(30자리까지 입력 가능)");
 							continue;
 						}
 					}else if(Integer.parseInt(inputData)==2) {
-						if(Check.validateNumber(inputData)&&inputData.length()<=12) {
-							keyword = inputData;
+						if(Check.validateNumber(keyWord)&&keyWord.length()<=12) {
 						}else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 12자리 이내의 숫자만 입력해주세요!");
+							continue;
 						}
 					}
 				}
@@ -89,8 +88,12 @@ public class A_SelectRestView {
 				}
 
 				ArrayList<RestaurantDTO> resultList = new ArrayList<RestaurantDTO>();
-
-				resultList = rdao.getList(Integer.parseInt(choice), Integer.parseInt(choiceCate),Integer.parseInt(choiceSort), Integer.parseInt(limit),keyword);
+				Session.setData("choice",Integer.parseInt(choice));
+				Session.setData("choiceCate",Integer.parseInt(choiceCate));
+				Session.setData("choiceSort",Integer.parseInt(choiceSort));
+				Session.setData("limit",Integer.parseInt(limit));
+				Session.setData("keyWord",keyWord);
+				resultList = rdao.getList(Integer.parseInt(choice), Integer.parseInt(choiceCate),Integer.parseInt(choiceSort), Integer.parseInt(limit),keyWord);
 				if (resultList.size() == 0) {
 					System.out.println("※조회된 식당이 없습니다.");
 				} else {
