@@ -348,7 +348,16 @@ public class RestaurantDAO {
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, restaurant_id);
-			return ps.executeUpdate() == 1;
+			if(ps.executeUpdate()==1) {
+				if(this.select(restaurant_id)!=null) {
+					int choice = (Integer)Session.getData("choice");
+					int choiceCate=(Integer)Session.getData("choiceCate");
+					int choiceSort=(Integer)Session.getData("choiceSort");
+					int limit=(Integer)Session.getData("limit");
+					String keyWord=(String)Session.getData("keyWord");
+					return this.getList(choice, choiceCate, choiceSort, limit, keyWord).size()>0;
+				}
+			}
 		} catch (SQLException e) {
 		}
 		return false;

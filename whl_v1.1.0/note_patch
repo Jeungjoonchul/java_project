@@ -1,0 +1,4 @@
+22-06-17 패치 내용
+	1. 	view > A_UpdateUserView에서 user_nickname을 변경할 시 중복되는 경우 다시 입력을 받을 수 있도록 'continue' 추가(46번줄)
+	2. 	view > A_ReviseRestView에서 restaurant를 삭제 후 Session에 저장된 ArrayList를 업데이트하지 않아  삭제되었던 음식점이 여전히 검색 결과 list에 노출되는 것을 막기 위해
+		RestaurantDAO > delete메소드에 ArrayList를 업데이트하는 내용 추가

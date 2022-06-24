@@ -12,9 +12,9 @@ public class Index {
 		// 프로그램 title
 		System.out.println("");
 		System.out.println("========================");
-		System.out.println("🍲🍜🍣우리 점심 머먹지?🍕🌭☕");
+		System.out.println("🍲🍜🍣우리 점심 뭐먹지?🍕🌭☕");
 		System.out.println("========================");
-		System.out.println("Copyright 2022.Ferrari Group 4 ver1.1.0");
+		System.out.println("Copyright 2022.Ferrari Group 4 ver1.1.1");
 		System.out.println("");
 		while (true) {
 			System.out.println("■메뉴를 선택하세요.\n1. 로그인 / 2. 회원가입 / 3. 나가기");

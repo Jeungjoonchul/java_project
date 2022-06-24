@@ -43,6 +43,7 @@ public class A_UpdateUserView {
 								System.out.println("◎사용 가능한 닉네임입니다.");
 							} else {
 								System.out.println("※이미 닉네임이 존재합니다. 확인 후 다시 시도해주세요!");
+								continue;
 							}
 						} else {
 							System.out.println("※입력 형식이 올바르지 않습니다. 영문자와 숫자, 한글만 사용하여 2자리~10자리로 입력해주세요!");
