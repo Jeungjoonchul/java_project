@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import dto.RestaurantDTO;
-import dto.UserDTO;
 
 public class RestaurantDAO {
 	private Connection conn;

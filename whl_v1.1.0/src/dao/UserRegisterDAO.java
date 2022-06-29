@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import dto.RestaurantDTO;
 import dto.UserDTO;
 import dto.UserRegisterDTO;
 

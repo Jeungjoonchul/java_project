@@ -27,7 +27,6 @@ public class SMS {
 		params.put("app_version", "test app 1.2"); // application name and version
 
 		Random r = new Random();
-		Scanner sc = new Scanner(System.in);
 		String source = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		int len = source.length();// 위 문자열의 전체 길이 74
 		String result = "";
